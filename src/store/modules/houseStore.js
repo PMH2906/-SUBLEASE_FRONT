@@ -12,7 +12,19 @@ const houseStore = {
     cnts: [],
     jibuns:[],
   },
-  getters: {},
+  getters: {
+    getLatLng:function(state){
+      let arr=[];
+      let list=[];
+      for(let i=0;i<state.houses.length;i++){
+        arr[0]=state.houses[i].lat;
+        arr[1]=state.houses[i].lng;
+        list.push(arr);
+      }
+      console.log("GETTTTT",list);
+      return list;
+    }
+  },
   mutations: {
     CLEAR_SIDO_LIST(state) {
       state.sidos = [{ value: null, text: "선택하세요" }];
@@ -44,19 +56,19 @@ const houseStore = {
     },
     SET_HOUSE_LIST(state, houses) {
       state.houses = houses.list;
-      console.log(state.houses);
+      console.log("House List",state.houses);
     },
     SET_DETAIL_HOUSE(state, house) {
       state.house = house;
     },
     SET_POINT_LIST(state, points){
       state.points=points;
-      console.log("Points ",state.points);
+      // console.log("Points ",state.points);
     },
     SET_HOUSE_CNT(state,cnts){
       state.cnts=cnts;
-      console.log("Cnts ",state.cnts);
-    }
+      // console.log("Cnts ",state.cnts);
+    },
   },
   actions: {
     getSido: ({ commit }) => {
@@ -113,12 +125,11 @@ const houseStore = {
       houseList(
         params,
         ({ data }) => {
-          console.log("22222222222222",data);
           commit("SET_HOUSE_LIST", data);
           data.list.forEach(e => {
             tradeCnt(e,({data})=>{
               commit("SET_HOUSE_CNT",data);
-              console.log("trrrrrrrrrrrrrrrrrade",data);
+              // console.log("trrrrrrrrrrrrrrrrrade",data);
             },
             (error)=>{
               console.log(error);
@@ -130,21 +141,6 @@ const houseStore = {
         }
       );
     },
-    // getTradeCnt: ({commit},dongCode, jibun)=>{
-    //   const params={
-    //     dongCode:dongCode,
-    //     jibun:jibun,
-    //   };
-    //   tradeCnt(
-    //     params,
-    //     ({data})=>{
-    //       commit("SET_HOUSE_CNT",data);
-    //     },
-    //     (error)=>{
-    //       console.log(error);
-    //     }
-    //   )
-    // },
     detailHouse: ({ commit }, house) => {
       // 나중에 house.일련번호를 이용하여 API 호출
       commit("SET_DETAIL_HOUSE", house);
