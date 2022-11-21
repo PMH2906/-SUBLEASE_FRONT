@@ -1,4 +1,5 @@
-import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade } from "@/api/house.js";
+import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade,baseAddress,
+  buildingInfo,interestArea } from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -11,7 +12,8 @@ const houseStore = {
     points: [],
     cntarr: [],
     jibuns:[],
-    tradehouse:[]
+    tradehouse:[],
+    address:[],
   },
   getters: {
     getLatLng:function(state){
@@ -65,7 +67,7 @@ const houseStore = {
     },
     SET_POINT_LIST(state, points){
       state.points=points;
-      // console.log("Points ",state.points);
+      console.log("Points ",state.points);
     },
     SET_HOUSE_CNT(state,cnts){
       state.cntarr.push(cnts)
@@ -73,6 +75,17 @@ const houseStore = {
     SET_TRADE_HOUSE(state,tradehouse){
       state.tradehouse=tradehouse;
       // console.log(state.tradehouse)
+    },
+    SET_BASE_LIST(state,address){
+      state.address=address;
+      // console.log("BASE LIST ",state.address);
+    },
+    SET_BUILDING_INFO(state,building){
+      state.building=building;
+      console.log("BUILDING INFO ",state.building);
+    },
+    SET_INTEREST_INFO(){
+      console.log("SET-Interest_info")
     }
   },
   actions: {
@@ -111,8 +124,20 @@ const houseStore = {
         }
       );
     },
-    getPointList: ({commit}, gugunCode)=>{
-      const params={gugunCode: gugunCode};
+    getBaseAddress:({commit},gugunCode)=>{
+      console.log(gugunCode)
+      baseAddress(
+        gugunCode,
+        ({data})=>{
+          commit("SET_BASE_LIST",data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+    getPointList: ({commit}, dongCode)=>{
+      const params={dongCode: dongCode};
       pointList(
         params,
         ({data})=>{
@@ -123,11 +148,12 @@ const houseStore = {
         }
       )
     },
-    getHouseList: ({ commit }, dongCode,jibun) => {
+    getHouseList: ({ commit }, data) => {
       const params = {
-        dongCode: dongCode,
-        jibun:jibun
-      };
+        dongCode: data.dongCode,
+        jibun:data.jibun
+      }; 
+      console.log(params);
       houseList(
         params,
         ({ data }) => {
@@ -175,6 +201,35 @@ const houseStore = {
           console.log(error);
         }
       )
+    },
+    getBuildingInfo:({commit},data)=>{
+      console.log("Info ",data);
+      const params={dongCode:data};
+      buildingInfo(
+        params,
+        ({data})=>{
+          commit("SET_BUILDING_INFO", data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+
+    //관심지역
+    setInterestArea:({commit},data)=>{
+      console.log("Interest", data);
+      const params={dongCode: data.dongCode,userid: data.userId};
+      interestArea(
+        params,
+        ({data})=>{
+          commit("SET_INTEREST_INFO", data);
+          console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      ) 
     }
   },
 };

@@ -5,6 +5,7 @@ import RegisterView from "@/views/RegisterView.vue"
 import UserMyPage from "@/components/UserMyPage.vue";
 import AptView from "@/views/AptView";
 import RegistAptView from "@/views/apt/RegistAptView";
+import BookMarkView from "@/views/BookMarkView";
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
     name:'RegistAptView',
     component: RegistAptView
   },
+  {
+    path:"/bookmark",
+    name:"BookMarkView",
+    component: BookMarkView
+  }
 ]
 
 const router = new VueRouter({

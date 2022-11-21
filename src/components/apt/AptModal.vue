@@ -15,7 +15,7 @@
           <b-card-title class="apt-name">{{
             house.apartmentName
           }}</b-card-title>
-          <b-card-sub-title
+          <b-card-sub-title class="sub-title"
             >{{ house.dong }}, {{ house.buildYear }}</b-card-sub-title
           >
         </b-card-body>
@@ -37,7 +37,6 @@
       <AptList></AptList>
     </b-modal>
     </div>
-
   </div>
 </template>
 
@@ -69,7 +68,7 @@ export default {
       // console.log(dongCode, jibun)
       const params={dongCode,jibun};
       this.getTradeList(params);
-    }
+    },
   },
 };
 </script>
@@ -118,5 +117,13 @@ body {
   width: 50%;
   text-align: center;
   text-decoration: none;
+}
+.sub-title{
+  position:relative;
+}
+.likeBtn{
+  position:absolute;
+  top: 0;
+  left: 0;
 }
 </style>

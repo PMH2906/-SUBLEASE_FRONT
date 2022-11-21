@@ -4,8 +4,8 @@
       <router-link class="bar-item" to="/">Home</router-link>
       <router-link class="bar-item" to="/registapt">매물<br />올리기</router-link>
       <router-link class="bar-item" to="/bookmark">북마크</router-link>
-      <router-link class="bar-item" to="/login" v-if="!userInfo">로그인</router-link>
-      <div class="bar-item" @click="logout" v-else>로그아웃</div>
+      <!-- <router-link class="bar-item" to="/login" v-if="!userInfo">로그인</router-link>
+      <div class="bar-item" @click="logout" v-else>로그아웃</div> -->
       <router-link to="/mypage" class="bar-item">내정보보기</router-link>
     </b-navbar-nav>
   </div>

@@ -20,7 +20,7 @@ function dongList(params, success, fail) {
 //좌표리스트
 function pointList(params, success, fail) {
   console.log("dong ",params);
-  api.get(`/apt/dong`,{params:params}).then(success).catch(fail);
+  api.get(`/apt/dongsearch/${params.dongCode}`).then(success).catch(fail);
 }
 
 function houseList(params, success, fail) {
@@ -45,6 +45,15 @@ function houseTrade(params,success,fail){
   house.get(`/apttrade/houseTradeSearch`,{params:params}).then(success).catch(fail);
 } 
 
+function buildingInfo(params,success,fail){
+  house.get(`/building/${params.dongCode}`).then(success).catch(fail);
+}
+
+function interestArea(params,success,fail){
+  console.log("HOUSE.JS",params);
+  house.post(`/interest/registarea`,JSON.stringify(params)).then(success).catch(fail);
+}
 
 
-export { sidoList, gugunList, houseList,dongList, pointList,tradeCnt,houseDeal,houseTrade };
+
+export { sidoList, gugunList, houseList,dongList, pointList,tradeCnt,houseDeal,houseTrade,buildingInfo,interestArea };

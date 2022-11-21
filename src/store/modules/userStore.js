@@ -145,6 +145,7 @@ const userStore = {
     },
 
     async userRegister({commit},user){
+      console.log(user);
       await register(
         user,
         ({data})=>{
