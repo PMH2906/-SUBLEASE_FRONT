@@ -1,4 +1,4 @@
-import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt } from "@/api/house.js";
+import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade } from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -9,8 +9,9 @@ const houseStore = {
     houses: [],
     house: null,
     points: [],
-    cnts: [],
+    cntarr: [],
     jibuns:[],
+    tradehouse:[]
   },
   getters: {
     getLatLng:function(state){
@@ -56,19 +57,23 @@ const houseStore = {
     },
     SET_HOUSE_LIST(state, houses) {
       state.houses = houses.list;
-      console.log("House List",state.houses);
+      // console.log("House List",state.houses);
     },
     SET_DETAIL_HOUSE(state, house) {
       state.house = house;
+      // console.log(house);
     },
     SET_POINT_LIST(state, points){
       state.points=points;
       // console.log("Points ",state.points);
     },
     SET_HOUSE_CNT(state,cnts){
-      state.cnts=cnts;
-      // console.log("Cnts ",state.cnts);
+      state.cntarr.push(cnts)
     },
+    SET_TRADE_HOUSE(state,tradehouse){
+      state.tradehouse=tradehouse;
+      // console.log(state.tradehouse)
+    }
   },
   actions: {
     getSido: ({ commit }) => {
@@ -118,16 +123,19 @@ const houseStore = {
         }
       )
     },
-    getHouseList: ({ commit }, dongCode) => {
+    getHouseList: ({ commit }, dongCode,jibun) => {
       const params = {
         dongCode: dongCode,
+        jibun:jibun
       };
       houseList(
         params,
         ({ data }) => {
           commit("SET_HOUSE_LIST", data);
+          console.log("set house List",data);
           data.list.forEach(e => {
             tradeCnt(e,({data})=>{
+              console.log("TRADECNT ",data);
               commit("SET_HOUSE_CNT",data);
               // console.log("trrrrrrrrrrrrrrrrrade",data);
             },
@@ -141,10 +149,33 @@ const houseStore = {
         }
       );
     },
-    detailHouse: ({ commit }, house) => {
-      // 나중에 house.일련번호를 이용하여 API 호출
-      commit("SET_DETAIL_HOUSE", house);
+    getDetailHouse: ({ commit }, aptCode) => {
+      houseDeal(
+        aptCode,
+        ({data})=>{
+          commit("SET_DETAIL_HOUSE", data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
     },
+    getTradeList:({commit},data)=>{
+      console.log(data.dongCode, data.jibun)
+      const params = {
+        dongCode: data.dongCode,
+        jibun:data.jibun
+      };      
+      houseTrade(
+        params,
+        ({data})=>{
+          commit("SET_TRADE_HOUSE", data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    }
   },
 };
 

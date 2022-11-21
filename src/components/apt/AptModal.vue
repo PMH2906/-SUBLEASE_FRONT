@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-container" v-if="isToggle">
+  <div class="modal-container">
     <div>
       <b-card
         class="modal-card"
@@ -8,48 +8,82 @@
         img-src="https://placekitten.com/380/200"
         img-alt="Image"
         img-top
-        v-for="(house, index) in houses" :key="index"
+        v-for="(house, index) in houses"
+        :key="index"
       >
         <b-card-body>
-          <b-card-title class="apt-name">{{house.apartmentName}}</b-card-title>
-          <b-card-sub-title >{{house.dong}}, {{house.buildYear}}</b-card-sub-title>
+          <b-card-title class="apt-name">{{
+            house.apartmentName
+          }}</b-card-title>
+          <b-card-sub-title
+            >{{ house.dong }}, {{ house.buildYear }}</b-card-sub-title
+          >
         </b-card-body>
 
         <b-card-footer class="btn-container">
-          <a href="/apttrade" class="card-detail">거래 매물</a>
-          <a href="#" class="card-detail">거래 내역</a>
+          <b-button
+            class="card-detail"
+            @click="[tradehouse(house.dongCode, house.jibun),$bvModal.show('apttrade')]"
+            >거래 매물 +{{cntarr[index]}} </b-button
+          >
+          <b-button class="card-detail" @click="[detailhouse(house.aptCode),$bvModal.show('aptlist')]">거래 내역</b-button>
         </b-card-footer>
       </b-card>
+    <b-modal id="apttrade" scrollable title="거래 매물">
+      <AptTradeList></AptTradeList>
+    </b-modal>
+
+    <b-modal id="aptlist" scrollable title="거래 내역">
+      <AptList></AptList>
+    </b-modal>
     </div>
+
   </div>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState, mapActions } from "vuex";
+import AptList from "@/components/apt/AptList.vue";
+import AptTradeList from "@/components/apt/AptTradeList.vue";
 const houseStore = "houseStore";
 export default {
-  name:"AptModal",
-  computed:{
-      ...mapState(houseStore, ["houses"])
+  name: "AptModal",
+  components:{
+    AptList,
+    AptTradeList
+  },
+  computed: {
+    ...mapState(houseStore, ["houses","cntarr"]),
   },
   data() {
     return {
-      isToggle:"false",
+      isToggle: "false",
+    };
+  },
+    methods: {
+    ...mapActions(houseStore, ["getDetailHouse","getTradeList"]),
+    async detailhouse(aptCode) {
+        this.getDetailHouse(aptCode);
+    },
+    async tradehouse(dongCode, jibun){
+      // console.log(dongCode, jibun)
+      const params={dongCode,jibun};
+      this.getTradeList(params);
     }
   },
-}
+};
 </script>
 
 <style scoped>
-*{
-    margin:0;
-    padding:0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-body{
- -ms-overflow-style: none;
- }
- 
+body {
+  -ms-overflow-style: none;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -60,29 +94,29 @@ body{
   top: 15%;
   left: 65%;
   background-color: white;
-  border: 0.5px solid ;
+  border: 0.5px solid;
   overflow-y: scroll;
   border-radius: 10px;
   z-index: 1;
 }
-.modal-card{
-    margin: 15px;
+.modal-card {
+  margin: 15px;
 }
-.card-title{
-    margin-bottom:6px;
+.card-title {
+  margin-bottom: 6px;
 }
-.apt-name{
-    font-size: 1.2rm;
+.apt-name {
+  font-size: 1.2rm;
 }
-.card-body{
-    padding:10px;
+.card-body {
+  padding: 10px;
 }
-.btn-container{
-    display: inline-flex;
+.btn-container {
+  display: inline-flex;
 }
-.card-detail{
-    width:50%;
-    text-align: center;
-    text-decoration: none;
+.card-detail {
+  width: 50%;
+  text-align: center;
+  text-decoration: none;
 }
 </style>

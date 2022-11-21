@@ -22,9 +22,9 @@
         <b-form-select v-model="dongCode" :options="dongs" @change="searchApt"></b-form-select>
       </b-col>
       <b-col class="tag">
-        <button>#맛집</button>
-        <button>#관광</button>
-        <button>#부동산</button>
+        <button @click="select(food)">#맛집</button>
+        <button @click="select(tour)">#관광</button>
+        <button @click="select()">#부동산</button>
       </b-col>
     </b-row>
     </nav>
@@ -72,6 +72,9 @@ data() {
         // this.getTradeCnt(this.dongCode, this.jibun)
       }
     },
+    // select(type,dongCode){
+    //   this.getBuildingList();
+    // }
   },
 };
 </script>

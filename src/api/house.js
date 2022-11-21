@@ -33,4 +33,18 @@ function tradeCnt(params, success, fail){
   house.get(`/apttrade/houseTradeCnt`,{params:params}).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, houseList,dongList, pointList,tradeCnt };
+//상세 정보
+function houseDeal(params,success,fail){
+  // console.log("houseDeal", params)
+  house.get(`/apt/housedeal/${params}`).then(success).catch(fail);
+}
+
+//거래 정보
+function houseTrade(params,success,fail){
+  console.log(params);
+  house.get(`/apttrade/houseTradeSearch`,{params:params}).then(success).catch(fail);
+} 
+
+
+
+export { sidoList, gugunList, houseList,dongList, pointList,tradeCnt,houseDeal,houseTrade };
