@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="map"></div>
+    {{points}}
   </div>
 </template>
 
@@ -19,7 +20,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, ["houses"]),
+    ...mapState(houseStore, ["houses","points"]),
   },
   created() {
     if (!("geolocation" in navigator)) {
@@ -113,7 +114,7 @@ export default {
       };
     },
     setAptsOnMap() {
-      let i = 0;
+      var bounds = new kakao.maps.LatLngBounds();    
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
@@ -122,6 +123,7 @@ export default {
 
       this.houses.forEach((item) => {
         let coords = new kakao.maps.LatLng(item.lat, item.lng);
+        bounds.extend(coords);
 
         var marker = new kakao.maps.Marker({
           map: this.map,
@@ -145,12 +147,10 @@ export default {
           "mouseout",
           this.makeOutListener(infowindow)
         );
-        i++;
         this.markers.push(marker);
-        if (i == 1) {
-          this.map.panTo(coords);
-        }
+       
       });
+      this.map.setBounds(bounds);
     },
   },
 };
