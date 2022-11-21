@@ -6,14 +6,17 @@
          관심 지역
     </nav>
     <div>
-        
+        <BookMarkContent></BookMarkContent>
     </div>
 </div>
 </template>
 
 <script>
+import BookMarkContent from "@/components/bookmark/BookMarkContent.vue";
 export default {
-    
+    components:{
+        BookMarkContent,
+    }
 }
 </script>
 
