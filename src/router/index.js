@@ -6,14 +6,19 @@ import UserMyPage from "@/components/UserMyPage.vue";
 import AptView from "@/views/AptView";
 import RegistAptView from "@/views/apt/RegistAptView";
 import BookMarkView from "@/views/BookMarkView";
-
+import MainView from "@/views/MainView"
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path:'/',
+    path:'/apt',
     name:'',
     component: AptView
+  },
+  {
+    path:'/',
+    name:'',
+    component: MainView
   },
   {
     path: '/login',
