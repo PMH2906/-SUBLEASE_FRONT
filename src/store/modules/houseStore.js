@@ -1,5 +1,5 @@
 import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade,baseAddress,
-  buildingInfo,interestArea } from "@/api/house.js";
+  buildingInfo,interestArea,interestAreaList,tradesearch } from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -17,6 +17,8 @@ const houseStore = {
     markers_food:[],
     markers_tour:[],
     markers_living:[],
+    interest_area:[],
+    interest_building:[],
   },
   getters: {
     getLatLng:function(state){
@@ -66,7 +68,7 @@ const houseStore = {
     },
     SET_DETAIL_HOUSE(state, house) {
       state.house = house;
-      // console.log(house);
+      console.log(house);
     },
     SET_POINT_LIST(state, points){
       state.points=points;
@@ -101,7 +103,14 @@ const houseStore = {
       else if(data.type==="living"){
         state.markers_living=data.list;
       }
+    },
+    GET_INTEREST_AREA(state,data){
+      state.interest_area=data
+    },
+    GET_INTEREST_BUILDING(state,data){
+      state.interest_building=data;
     }
+
   },
   actions: {
     getSido: ({ commit }) => {
@@ -245,7 +254,36 @@ const houseStore = {
           console.log(error);
         }
       ) 
+    },
+    getInterestArea:({commit},data)=>{
+      console.log("getinterseArea",data);
+      const params={userId:data};
+      interestAreaList(
+        params,
+        ({data})=>{
+          commit("GET_INTEREST_AREA", data);
+          console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+    getInterestBuilding:({commit},data)=>{
+      console.log("GetInterestBuilding",data);
+      const params={userId:data};
+      tradesearch(
+        params,
+        ({data})=>{
+          commit("GET_INTEREST_BUILDING", data);
+          console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
     }
+    
   },
 };
 

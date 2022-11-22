@@ -1,5 +1,5 @@
 <template>
-<div class="bookmark">
+<div class="aptdetail">
     <div class="heroImg">
         <img class="first-img" src="@/assets/room1.jpg">
         <img class="second-img" src="@/assets/room1.jpg">
@@ -25,7 +25,8 @@
                 <div class="location"><span id="location-title">위치</span> <div>서울시 강남구 역삼동</div></div>
             </div>
             <div class="btn">
-                <button>예약하기</button><button>하트</button>
+                <button>예약하기</button>
+                <button >하트</button>
             </div>
         </div>
     </div>

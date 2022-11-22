@@ -14,23 +14,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-const userStore = "userStore";
+
 export default {
-  computed: {
-    ...mapState(userStore, ["userInfo"]),
-    // ...mapGetters(["checkUserInfo"]),
-  },
-  methods: {
-    ...mapActions(userStore, ["userLogout"]),
-    logout() {
-      console.log(this.userInfo);
-      this.userLogout(this.userInfo.userId);
-      sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
-      sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
-      this.$router.push("/login");
-    },
-  },
+
 };
 </script>
 <style scoped>

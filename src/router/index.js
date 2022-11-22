@@ -6,7 +6,9 @@ import UserMyPage from "@/components/UserMyPage.vue";
 import AptView from "@/views/AptView";
 import RegistAptView from "@/views/apt/RegistAptView";
 import BookMarkView from "@/views/BookMarkView";
-import MainView from "@/views/MainView"
+import MainView from "@/views/MainView";
+import BookMarkBuilding from "@/components/bookmark/BookMarkBuilding";
+import BookMarkArea from "@/components/bookmark/BookMarkArea";
 Vue.use(VueRouter)
 
 const routes = [
@@ -43,8 +45,22 @@ const routes = [
   {
     path:"/bookmark",
     name:"BookMarkView",
-    component: BookMarkView
+    component: BookMarkView,
+    redirect:"/bookmark/bookmarkarea",
+    children:[
+      {
+        path:"bookmarkarea",
+        name:"area",
+        component: BookMarkArea
+      },
+      {
+        path:"bookmarkbuilding",
+        name:"building",
+        component: BookMarkBuilding
+      }
+    ]
   }
+  
 ]
 
 const router = new VueRouter({
