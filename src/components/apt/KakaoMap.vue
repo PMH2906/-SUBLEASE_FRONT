@@ -135,7 +135,7 @@ export default {
       
     },
     makeMarkers(items){
-      let i=0;
+      let bounds=new kakao.maps.LatLngBounds();
       //이미지 애매하게 되는거 체크
       this.image=require("@/assets/주택.png");
       if(items==="food"){
@@ -154,7 +154,8 @@ export default {
     let  markerImage = new kakao.maps.MarkerImage(this.image, imageSize, imageOption);
       items.forEach((item) => {
         let coords = new kakao.maps.LatLng(item.lat, item.lng);
-
+        bounds.extend(coords);
+        
         var marker = new kakao.maps.Marker({
           map: this.map,
           position: coords,
@@ -178,12 +179,10 @@ export default {
           "mouseout",
           this.makeOutListener(infowindow)
         );
-        i++;
         this.markers.push(marker);
-        if (i == 1) {
-          this.map.panTo(coords);
-        }
+
       });
+      this.map.setBounds(bounds);
     }
   },
 };
