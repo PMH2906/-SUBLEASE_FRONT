@@ -4,8 +4,8 @@
       <b-card
         class="modal-card"
         no-body
-        style="max-width: 20rem"
-        img-src="https://placekitten.com/380/200"
+        
+        img-src="http://cdn.ksilbo.co.kr/news/photo/202008/770672_439915_052.jpg"
         img-alt="Image"
         img-top
         v-for="(house, index) in houses"
@@ -22,14 +22,14 @@
 
         <b-card-footer class="btn-container">
           <b-button
-            class="card-detail"
+            class="card-detail" variant="outline-light" 
             @click="[tradehouse(house.dongCode, house.jibun),$bvModal.show('apttrade')]"
-            >거래 매물 +{{cntarr[index]}} </b-button
+            >거래 매물 <span class="cnt">+{{cntarr[index]}} </span></b-button
           >
-          <b-button class="card-detail" @click="[detailhouse(house.aptCode),$bvModal.show('aptlist')]">거래 내역</b-button>
+          <b-button variant="outline-light" class="card-detail" @click="[detailhouse(house.aptCode),$bvModal.show('aptlist')]">거래 내역</b-button>
         </b-card-footer>
       </b-card>
-    <b-modal id="apttrade" scrollable title="거래 매물">
+    <b-modal id="apttrade" size="xl" height="800" scrollable title="거래 매물">
       <AptTradeList></AptTradeList>
     </b-modal>
 
@@ -87,37 +87,57 @@ body {
   display: none;
 }
 .modal-container {
-  width: 30%;
-  height: 80%;
+  width: 25%;
+  height: 85%;
   position: absolute;
-  top: 15%;
-  left: 65%;
+  top: 10%;
+  right: 2%;
   background-color: white;
   border: 0.5px solid;
   overflow-y: scroll;
   border-radius: 10px;
   z-index: 1;
+  background:rgba(255, 255, 255, 0.7)
 }
 .modal-card {
-  margin: 15px;
+  margin: 30px;
+  
 }
 .card-title {
   margin-bottom: 6px;
 }
 .apt-name {
   font-size: 1.2rm;
+  color: #242d54;
+  text-align: center;
 }
 .card-body {
+  text-decoration: none;
   padding: 10px;
+  text-align: center;
 }
 .btn-container {
   display: inline-flex;
 }
 .card-detail {
-  width: 50%;
-  text-align: center;
-  text-decoration: none;
+  width: 300px;
+  margin: 5px;
+  color:#242d54;
+  /* font-weight: bold; */
+  /* border: 1px solid #2f2d38 ; */
+  /* background-color: #2f2d38; */
+  border: none;
 }
+
+.card-detail:hover{
+  width: 300px;
+  margin: 5px;
+  color:#242d54;
+  /* border: 1px solid #311906 ; */
+  background-color:transparent;
+  font-weight: bold;
+}
+
 .sub-title{
   position:relative;
 }
@@ -126,4 +146,9 @@ body {
   top: 0;
   left: 0;
 }
+.cnt{
+  padding: 5px;
+  color:#2f2d38
+}
+
 </style>
