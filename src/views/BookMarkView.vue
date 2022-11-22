@@ -16,10 +16,8 @@
 
 <script>
 import ProfileNavBar from "@/components/ProfileNavBar.vue"
-import BookMarkContent from "@/components/bookmark/BookMarkContent.vue";
 export default {
     components:{
-        BookMarkContent,
         ProfileNavBar,
     }
 }
