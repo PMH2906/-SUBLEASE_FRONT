@@ -148,25 +148,25 @@ export default {
       else if(items==="tour"){
         this.image=require('@/assets/여가.png');
       }
-    let imageSize = new kakao.maps.Size(40, 40); // 마커이미지의 크기입니다
-    let imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+    // let imageSize = new kakao.maps.Size(40, 40); // 마커이미지의 크기입니다
+    // let imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
       
-    let  markerImage = new kakao.maps.MarkerImage(this.image, imageSize, imageOption);
+    // let  markerImage = new kakao.maps.MarkerImage(this.image, imageSize, imageOption);
       items.forEach((item) => {
         let coords = new kakao.maps.LatLng(item.lat, item.lng);
         bounds.extend(coords);
-        
+
         var marker = new kakao.maps.Marker({
           map: this.map,
           position: coords,
           clickable: true,
-          image: markerImage,
-          // title:item.apartmentName,
+          // image: markerImage,
+          title:item.apartmentName,
         });
         var infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="text-align : center;">${item.apartmentName}</div>`,
+          content: `<div style='text-align : center; color:black;'>${item.apartmentName}</div>`,
           position: coords
-          //emovable: true,
+          //removable: true,
         });
 
         kakao.maps.event.addListener(
@@ -189,7 +189,10 @@ export default {
 </script>
 
 <style scoped>
+
 #map {
+  margin-top: 5.5px;
+  margin-left: 50px;
   width: 100%;
   height: 100vh;
 }

@@ -43,4 +43,8 @@ export default {
 *{
     color: aliceblue;
 }
+
+#wrapper{
+  z-index: -1;
+}
 </style>

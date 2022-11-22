@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav class="header-nav">
-      <b-row class="mt-4 mb-4 text-center">
+      <b-row class="text-center">
         <!-- <b-col class="sm-3">
         <b-form-input
           v-model.trim="dongCode"
@@ -34,25 +34,29 @@
           ></b-form-select>
         </b-col>
         <b-col>
-          <button
-            class="likeBtn"
+          <b-button
+            class="btn" variant="outline-light"
             @click="registInterestArea(dongCode, userInfo.userId)"
           >
             관심 지역 등록
-          </button>
+          </b-button>
         </b-col>
         <b-col class="tag">
-          <button @click="select('food')">#맛집</button>
-          <button @click="select('tour')">#여가</button>
-          <button @click="select('living')">#생활</button>
+          <b-button
+            class="btn filter" variant="outline-light" @click="select('food')">#맛집</b-button>
+          <b-button
+            class="btn filter" variant="outline-light" @click="select('tour')">#여가</b-button>
+          <b-button
+            class="btn filter" variant="outline-light" @click="select('living')">#생활</b-button>
         </b-col>
         <b-col>
           <router-link class="bar-item" to="/login" v-if="!userInfo"
-            >로그인</router-link
+            >LOGIN</router-link
           >
           <div v-else>
-            <span>{{ userInfo.userName }}님</span>
-            <span class="bar-item" @click="logout">로그아웃</span>
+            <b-icon icon="person-fill" font-scale="1.5" v-if="userInfo" style="color:black"/><span id="title"/>
+            <span style="padding:10px;" class="name">{{ userInfo.userName }}님</span>
+            <span class="bar-item" @click="logout">LOGOUT</span>
           </div>
         </b-col>
       </b-row>
@@ -104,7 +108,7 @@ export default {
       "setInterestArea",
     ]),
     ...mapActions(userStore, ["userLogout"]),
-    ...mapMutations(houseStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_APT_LIST","CLEAR_DONG_LIST","CREATE_MARKER"]),
+    ...mapMutations(houseStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_APT_LIST","CLEAR_DONG_LIST"]),
     logout() {
       console.log(this.userInfo);
       this.userLogout(this.userInfo.userId);
@@ -141,7 +145,7 @@ export default {
           }
           return false;
         })
-        this.makeMarker(list,"food");
+        this.makeMarker(list);
       }else if(type==="tour"){
         console.log(type);
         const list = this.building.filter((item) => {
@@ -150,7 +154,7 @@ export default {
           }
           return false;
         })
-        this.makeMarker(list,"tour");
+        this.makeMarker(list);
       }else if(type==="living"){
         const list=this.building.filter((item)=>{
           if(item.category==="생활서비스"){
@@ -158,15 +162,15 @@ export default {
           }
           return false;
         })
-        this.makeMarker(list,"living");
+        this.makeMarker(list);
       }
     },
-    makeMarker(list,type){
+    makeMarker(list){
+      this.markerPositions=[];
       list.forEach(e => {
         this.markerPositions.push([e.lat, e.lng]);
       });
-      const datas={list,type};
-      this.CREATE_MARKER(datas);
+      console.log(this.markerPositions)
     },
     //관심지역 등록
     registInterestArea(dongCode, userId) {
@@ -180,16 +184,59 @@ export default {
 
 <style scoped>
 * {
-  color: #25284c;
-;
+  color: #242d54;
 }
 
 .header-nav {
-  margin: 0;
-  padding: 0;
-  height: 40px;
+  margin-left: 50px;
+  padding: 7px 0;
+  box-shadow: 0px 4px 5px grey;
+  background-color: white;
+  height: 43px;
 }
 .bar-item {
+  /* cursor: pointer; */
+  text-decoration: none;
+}
+.custom-select{
+  /* border-radius: 20px;
+  width: fit-content;
+  padding: 0 10px; */
+  border: none;
+  
+}
+/* .bar-item :hover{
+  color: #311906;
+} */
+.login{
+   color: black;
+}
+.btn {
+  border: none;
+  color: #242d54;
+}
+.btn.btn-outline-light{
+  padding: 0;
+}
+button:hover{
+  /* color: #311906; */
+  font-weight: bold;
+  background-color: transparent;
+  /* transform: scale(1.2); */
+}
+.bar-item, a{
+  text-decoration: none;
+}
+.bar-item:hover, a:hover{
+  /* transform: scale(1.2); */
+  color: #242d54;
   cursor: pointer;
+  font-weight: bold;
+}
+.btn.filter{
+  padding: 0 7px;
+}
+.name{
+  font-weight: bolder;
 }
 </style>

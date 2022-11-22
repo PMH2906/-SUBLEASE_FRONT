@@ -5,7 +5,7 @@
       <div id="main">
         <!-- Header -->
         <header id="header">
-          <h1>SubLease</h1>
+          <h1><b-icon icon="building" font-scale="1.5"/>SubLease</h1>
           <p>
             The site for students to find subleases 
           </p>
