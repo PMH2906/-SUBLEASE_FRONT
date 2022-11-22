@@ -104,12 +104,7 @@ export default {
       "setInterestArea",
     ]),
     ...mapActions(userStore, ["userLogout"]),
-    ...mapMutations(houseStore, [
-      "CLEAR_SIDO_LIST",
-      "CLEAR_GUGUN_LIST",
-      "CLEAR_APT_LIST",
-      "CLEAR_DONG_LIST",
-    ]),
+    ...mapMutations(houseStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_APT_LIST","CLEAR_DONG_LIST","CREATE_MARKER"]),
     logout() {
       console.log(this.userInfo);
       this.userLogout(this.userInfo.userId);
@@ -145,33 +140,33 @@ export default {
             return true;
           }
           return false;
-        });
-        this.makeMarker(list);
-      } else if (type === "tour") {
+        })
+        this.makeMarker(list,"food");
+      }else if(type==="tour"){
         console.log(type);
         const list = this.building.filter((item) => {
           if (item.category === "관광/여가/오락") {
             return true;
           }
           return false;
-        });
-        this.makeMarker(list);
-      } else if (type === "living") {
-        const list = this.building.filter((item) => {
-          if (item.category === "생활서비스") {
+        })
+        this.makeMarker(list,"tour");
+      }else if(type==="living"){
+        const list=this.building.filter((item)=>{
+          if(item.category==="생활서비스"){
             return true;
           }
           return false;
-        });
-        this.makeMarker(list);
+        })
+        this.makeMarker(list,"living");
       }
     },
-    makeMarker(list) {
-      this.markerPositions = [];
-      list.forEach((e) => {
+    makeMarker(list,type){
+      list.forEach(e => {
         this.markerPositions.push([e.lat, e.lng]);
       });
-      console.log(this.markerPositions);
+      const datas={list,type};
+      this.CREATE_MARKER(datas);
     },
     //관심지역 등록
     registInterestArea(dongCode, userId) {

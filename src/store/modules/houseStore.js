@@ -14,6 +14,9 @@ const houseStore = {
     jibuns:[],
     tradehouse:[],
     address:[],
+    markers_food:[],
+    markers_tour:[],
+    markers_living:[],
   },
   getters: {
     getLatLng:function(state){
@@ -86,6 +89,18 @@ const houseStore = {
     },
     SET_INTEREST_INFO(){
       console.log("SET-Interest_info")
+    },
+    CREATE_MARKER(state,data){
+      console.log(data.list, data.type)
+      if(data.type==="food"){
+        state.markers_food=data.list;
+      }
+      else if(data.type==="tour"){
+        state.markers_tour=data.list;
+      }
+      else if(data.type==="living"){
+        state.markers_living=data.list;
+      }
     }
   },
   actions: {

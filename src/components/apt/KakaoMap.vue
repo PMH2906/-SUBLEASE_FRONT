@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="map"></div>
-    {{points}}
   </div>
 </template>
 
@@ -17,10 +16,11 @@ export default {
       markers: [],
       latitude: 0,
       longitude: 0,
+      image: null,
     };
   },
   computed: {
-    ...mapState(houseStore, ["houses","points"]),
+    ...mapState(houseStore, ["houses","markers","markers_tour","markers_food","markers_living"]),
   },
   created() {
     if (!("geolocation" in navigator)) {
@@ -51,8 +51,18 @@ export default {
   },
   watch: {
     houses: function () {
-      this.setAptsOnMap();
+      this.setAptsOnMap(this.houses);
     },
+    markers_tour: function (){
+      this.setAptsOnMap(this.markers_tour);
+    },
+    markers_food: function(){
+      this.setAptsOnMap(this.markers_food);
+            console.log("123")
+    },
+    markers_living:function(){
+      this.setAptsOnMap(this.markers_living);
+    }
   },
   methods: {
     initMap() {
@@ -113,22 +123,44 @@ export default {
         infowindow.close();
       };
     },
-    setAptsOnMap() {
-      var bounds = new kakao.maps.LatLngBounds();    
+    setAptsOnMap(value) {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
 
       this.markers = [];
+      
+      this.makeMarkers(value);
 
-      this.houses.forEach((item) => {
+      
+    },
+    makeMarkers(items){
+      let bounds=new kakao.maps.LatLngBounds();
+      //이미지 애매하게 되는거 체크
+      this.image=require("@/assets/주택.png");
+      if(items==="food"){
+        console.log("okok")
+        this.image=require('@/assets/음식.png');
+      }
+      else if(items==="living"){
+        this.image=require('@/assets/생활.png');
+      }
+      else if(items==="tour"){
+        this.image=require('@/assets/여가.png');
+      }
+    let imageSize = new kakao.maps.Size(40, 40); // 마커이미지의 크기입니다
+    let imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      
+    let  markerImage = new kakao.maps.MarkerImage(this.image, imageSize, imageOption);
+      items.forEach((item) => {
         let coords = new kakao.maps.LatLng(item.lat, item.lng);
         bounds.extend(coords);
-
+        
         var marker = new kakao.maps.Marker({
           map: this.map,
           position: coords,
           clickable: true,
+          image: markerImage,
           // title:item.apartmentName,
         });
         var infowindow = new kakao.maps.InfoWindow({
@@ -148,10 +180,10 @@ export default {
           this.makeOutListener(infowindow)
         );
         this.markers.push(marker);
-       
+
       });
       this.map.setBounds(bounds);
-    },
+    }
   },
 };
 </script>
