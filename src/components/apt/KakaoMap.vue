@@ -20,7 +20,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, ["houses","markers","markers_tour","markers_food","markers_living"]),
+    ...mapState(houseStore, ["houses","markers_tour","markers_food","markers_living"]),
   },
   created() {
     if (!("geolocation" in navigator)) {
@@ -58,7 +58,6 @@ export default {
     },
     markers_food: function(){
       this.setAptsOnMap(this.markers_food);
-            console.log("123")
     },
     markers_living:function(){
       this.setAptsOnMap(this.markers_living);
@@ -148,10 +147,10 @@ export default {
       else if(items==="tour"){
         this.image=require('@/assets/여가.png');
       }
-    // let imageSize = new kakao.maps.Size(40, 40); // 마커이미지의 크기입니다
-    // let imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+    let imageSize = new kakao.maps.Size(40, 40); // 마커이미지의 크기입니다
+    let imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
       
-    // let  markerImage = new kakao.maps.MarkerImage(this.image, imageSize, imageOption);
+    let  markerImage = new kakao.maps.MarkerImage(this.image, imageSize, imageOption);
       items.forEach((item) => {
         let coords = new kakao.maps.LatLng(item.lat, item.lng);
         bounds.extend(coords);
@@ -160,7 +159,7 @@ export default {
           map: this.map,
           position: coords,
           clickable: true,
-          // image: markerImage,
+          image: markerImage,
           title:item.apartmentName,
         });
         var infowindow = new kakao.maps.InfoWindow({

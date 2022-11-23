@@ -14,9 +14,12 @@
 </template>
 
 <script>
-
+import {mapState} from "vuex";
+const userStore="userStore";
 export default {
-
+  computed:{
+    ...mapState(userStore, ["userInfo"])
+  }
 };
 </script>
 <style scoped>

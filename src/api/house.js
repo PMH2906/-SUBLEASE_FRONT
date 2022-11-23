@@ -45,6 +45,10 @@ function houseTrade(params,success,fail){
   house.get(`/apttrade/houseTradeSearch`,{params:params}).then(success).catch(fail);
 } 
 
+function houseTradeNo(params,success,fail){
+  house.get(`/apttrade/houseTrade/${params.tradeNo}`).then(success).catch(fail);
+}
+
 function buildingInfo(params,success,fail){
   house.get(`/building/${params.dongCode}`).then(success).catch(fail);
 }
@@ -77,5 +81,6 @@ function deleteTradeInfo(params,success,fail){
 }
 
 
+
 export { sidoList, gugunList, houseList,dongList, pointList,tradeCnt,houseDeal,houseTrade,buildingInfo,
-  interestArea,interestAreaList,removeInterestArea,registtrade,tradesearch,deleteTradeInfo};
+  interestArea,interestAreaList,removeInterestArea,registtrade,tradesearch,deleteTradeInfo,houseTradeNo};

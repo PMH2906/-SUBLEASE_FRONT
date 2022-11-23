@@ -1,5 +1,5 @@
 import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade,baseAddress,
-  buildingInfo,interestArea,interestAreaList,tradesearch } from "@/api/house.js";
+  buildingInfo,interestArea,interestAreaList,tradesearch,houseTradeNo,deleteTradeInfo } from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -19,6 +19,7 @@ const houseStore = {
     markers_living:[],
     interest_area:[],
     interest_building:[],
+    trade_detail:[],
   },
   getters: {
     getLatLng:function(state){
@@ -109,6 +110,12 @@ const houseStore = {
     },
     GET_INTEREST_BUILDING(state,data){
       state.interest_building=data;
+    },
+    GET_TRADE_DETAIL(state,data){
+      state.trade_detail=data;
+      console.log(state.trade_detail)
+    },
+    DEL_INTEREST_TRADE(){
     }
 
   },
@@ -277,6 +284,31 @@ const houseStore = {
         ({data})=>{
           commit("GET_INTEREST_BUILDING", data);
           console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+    getHouseTrade:({commit},data)=>{
+      console.log(data.tradeNo)
+      const params={tradeNo:data.tradeNo};
+      houseTradeNo(
+        params,
+        ({data})=>{
+          commit("GET_TRADE_DETAIL",data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+    deleteHouseTrade:({commit},data)=>{
+      const params={tradeNo:data.tradeNo};
+      deleteTradeInfo(
+        params,
+        ({data})=>{
+          commit("DEL_INTEREST_TRADE",data);
         },
         (error)=>{
           console.log(error);

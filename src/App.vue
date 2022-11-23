@@ -20,7 +20,4 @@ export default {
     padding:0;
     margin:0;
 }
-html{
-    margin-left: 90px;
-}
 </style>

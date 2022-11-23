@@ -20,7 +20,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .event-card {
 	width: 320px;
 	height: auto;

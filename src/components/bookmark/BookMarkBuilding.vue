@@ -58,7 +58,8 @@
                 <b-col sm="3" class="text-sm-right"><b>반려 동물:</b></b-col>
                 <b-col>{{ interest_building.list[row.index].petOpt ? "가능" : "불가능" }}</b-col>
               </b-row>
-              {{items}}
+              <b-button @click="goToDetail(interest_building.list[row.index].tradeNo)">바로 가기</b-button>
+              <b-button @click="goToDelete(interest_building.list[row.index].tradeNo)">매물 삭제</b-button>
             </b-card>
           </template>
         </b-table>
@@ -81,11 +82,11 @@ export default {
     KaKaoMap,
   },
   computed: {
-    ...mapState(houseStore, ["interest_building"]),
+    ...mapState(houseStore, ["interest_building","house_trade"]),
     ...mapState(userStore, ["userInfo"]),
   },
   methods: {
-    ...mapActions(houseStore, ["getInterestBuilding", "getHouseList"]),
+    ...mapActions(houseStore, ["getInterestBuilding", "getHouseList","getHouseTrade","deleteHouseTrade"]),
     getInterest() {
       console.log(this.userInfo.userId);
       this.getInterestBuilding(this.userInfo.userId);
@@ -95,6 +96,19 @@ export default {
       const params = { dongCode: rows.bcode };
       this.getHouseList(params);
     },
+    goToDetail(tradeNo){
+      console.log(tradeNo)
+      const params = {tradeNo:tradeNo};
+      this.getHouseTrade(params);
+      this.$router.push({name:"interestdetail"});
+
+    },
+    goToDelete(tradeNo){
+      const params = {tradeNo:tradeNo};
+      this.deleteHouseTrade(params);
+      
+      this.$router.push({name:"area"}).catch(()=>{});
+    }
   },
   created() {
     this.getInterest();
@@ -108,6 +122,9 @@ export default {
 </script>
 
 <style scoped>
+*{
+  color:black;
+}
 .bookmark-container {
   display: flex;
   justify-content: center;
