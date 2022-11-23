@@ -35,7 +35,7 @@ export default {
 </script>
 <style scoped>
 *{
-  z-index: 2;
+  z-index: 3;
 }
 
 .icon-bar {

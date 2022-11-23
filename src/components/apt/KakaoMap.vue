@@ -20,7 +20,12 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, ["houses","markers","markers_tour","markers_food","markers_living"]),
+    ...mapState(houseStore, [
+      "houses",
+      "markers_tour",
+      "markers_food",
+      "markers_living",
+    ]),
   },
   created() {
     if (!("geolocation" in navigator)) {
@@ -40,7 +45,7 @@ export default {
           /* global kakao */
           script.onload = () => kakao.maps.load(this.initMap);
           script.src =
-            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0";
+            "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0&libraries=services,clusterer,drawing";
           document.head.appendChild(script);
         }
       },
@@ -51,18 +56,22 @@ export default {
   },
   watch: {
     houses: function () {
+      this.image = "";
       this.setAptsOnMap(this.houses);
     },
-    markers_tour: function (){
+    markers_tour: function () {
+      this.image = require("@/assets/mike.png");
       this.setAptsOnMap(this.markers_tour);
     },
-    markers_food: function(){
+    markers_food: function () {
+      this.image = require("@/assets/fork.png");
       this.setAptsOnMap(this.markers_food);
-            console.log("123")
+      console.log("123");
     },
-    markers_living:function(){
+    markers_living: function () {
+      this.image = require("@/assets/cart.png");
       this.setAptsOnMap(this.markers_living);
-    }
+    },
   },
   methods: {
     initMap() {
@@ -127,31 +136,16 @@ export default {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
-
       this.markers = [];
-      
       this.makeMarkers(value);
-
-      
     },
-    makeMarkers(items){
-      let bounds=new kakao.maps.LatLngBounds();
-      //이미지 애매하게 되는거 체크
-      this.image=require("@/assets/주택.png");
-      if(items==="food"){
-        console.log("okok")
-        this.image=require('@/assets/음식.png');
+    makeMarkers(items) {
+      if (this.image !== "") {
+        this.makeBuildingMarkers(items);
+        return;
       }
-      else if(items==="living"){
-        this.image=require('@/assets/생활.png');
-      }
-      else if(items==="tour"){
-        this.image=require('@/assets/여가.png');
-      }
-    // let imageSize = new kakao.maps.Size(40, 40); // 마커이미지의 크기입니다
-    // let imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-      
-    // let  markerImage = new kakao.maps.MarkerImage(this.image, imageSize, imageOption);
+      let bounds = new kakao.maps.LatLngBounds();
+
       items.forEach((item) => {
         let coords = new kakao.maps.LatLng(item.lat, item.lng);
         bounds.extend(coords);
@@ -161,11 +155,11 @@ export default {
           position: coords,
           clickable: true,
           // image: markerImage,
-          title:item.apartmentName,
+          title: item.apartmentName,
         });
         var infowindow = new kakao.maps.InfoWindow({
           content: `<div style='text-align : center; color:black;'>${item.apartmentName}</div>`,
-          position: coords
+          position: coords,
           //removable: true,
         });
 
@@ -180,16 +174,76 @@ export default {
           this.makeOutListener(infowindow)
         );
         this.markers.push(marker);
-
       });
       this.map.setBounds(bounds);
-    }
+    },
+    makeBuildingMarkers(items) {
+      if (items.length <= 0) {
+        alert("주변에 상가가 없습니다.");
+        return;
+      }
+
+      // let bounds = new kakao.maps.LatLngBounds();
+
+      let imageSize = new kakao.maps.Size(27, 27); // 마커이미지의 크기입니다
+      let imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+      let markerImage = new kakao.maps.MarkerImage(
+        this.image,
+        imageSize,
+        imageOption
+      );
+      //////////////////////
+      // 마커 클러스터러를 생성합니다
+      var clusterer = new kakao.maps.MarkerClusterer({
+        map: this.map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+        minLevel: 3, // 클러스터 할 최소 지도 레벨
+      });
+      
+      clusterer.clear();
+      clusterer.redraw();
+  
+      items.forEach((item) => {
+        let coords = new kakao.maps.LatLng(item.lat, item.lng);
+        // bounds.extend(coords);
+        var marker = new kakao.maps.Marker({
+          // map: this.map,
+          position: coords,
+          clickable: true,
+          image: markerImage,
+          title: item.title,
+        });
+        var infowindow = new kakao.maps.InfoWindow({
+          content: `<div style='text-align : center; color:black;'>${item.title}</div>`,
+          position: coords,
+          //removable: true,
+        });
+
+        kakao.maps.event.addListener(
+          marker,
+          "mouseover",
+          this.makeOverListener(this.map, marker, infowindow)
+        );
+        kakao.maps.event.addListener(
+          marker,
+          "mouseout",
+          this.makeOutListener(infowindow)
+        );
+        this.markers.push(marker);
+      });
+      // this.map.setBounds(bounds);
+      //clusterer.redraw();
+      
+      clusterer.addMarkers(this.markers,false);
+      
+      
+    },
   },
 };
 </script>
 
 <style scoped>
-
 #map {
   margin-top: 5.5px;
   margin-left: 50px;

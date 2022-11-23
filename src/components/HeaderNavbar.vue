@@ -13,7 +13,8 @@
         <b-button variant="outline-primary" @click="sendKeyword">검색</b-button>
       </b-col> -->
         <b-col class="sm-3">
-          <b-form-select size="sm"
+          <b-form-select
+            size="sm"
             v-model="sidoCode"
             :options="sidos"
             @change="gugunList"
@@ -35,7 +36,8 @@
         </b-col>
         <b-col>
           <b-button
-            class="btn" variant="outline-light"
+            class="btn"
+            variant="outline-light"
             @click="registInterestArea(dongCode, userInfo.userId)"
           >
             관심 지역 등록
@@ -43,19 +45,38 @@
         </b-col>
         <b-col class="tag">
           <b-button
-            class="btn filter" variant="outline-light" @click="select('food')">#맛집</b-button>
+            class="btn filter"
+            variant="outline-light"
+            @click="select('food')"
+            >#맛집</b-button
+          >
           <b-button
-            class="btn filter" variant="outline-light" @click="select('tour')">#여가</b-button>
+            class="btn filter"
+            variant="outline-light"
+            @click="select('tour')"
+            >#유흥</b-button
+          >
           <b-button
-            class="btn filter" variant="outline-light" @click="select('living')">#생활</b-button>
+            class="btn filter"
+            variant="outline-light"
+            @click="select('living')"
+            >#편의</b-button
+          >
         </b-col>
         <b-col>
           <router-link class="bar-item" to="/login" v-if="!userInfo"
             >LOGIN</router-link
           >
           <div v-else>
-            <b-icon icon="person-fill" font-scale="1.5" v-if="userInfo" style="color:black"/><span id="title"/>
-            <span style="padding:10px;" class="name">{{ userInfo.userName }}님</span>
+            <b-icon
+              icon="person-fill"
+              font-scale="1.5"
+              v-if="userInfo"
+              style="color: black"
+            /><span id="title" />
+            <span style="padding: 10px" class="name"
+              >{{ userInfo.userName }}님</span
+            >
             <span class="bar-item" @click="logout">LOGOUT</span>
           </div>
         </b-col>
@@ -108,7 +129,13 @@ export default {
       "setInterestArea",
     ]),
     ...mapActions(userStore, ["userLogout"]),
-    ...mapMutations(houseStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_APT_LIST","CLEAR_DONG_LIST"]),
+    ...mapMutations(houseStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_APT_LIST",
+      "CLEAR_DONG_LIST",
+      "CREATE_MARKER"
+    ]),
     logout() {
       console.log(this.userInfo);
       this.userLogout(this.userInfo.userId);
@@ -136,41 +163,55 @@ export default {
         // this.getTradeCnt(this.dongCode, this.jibun)
       }
     },
+    setTradeCnt(h){
+        h.forEach((e) => {
+          const params = { dongCode: this.dongCode, jibun: e.jibun };
+          this.getTradeCnt(params);
+          console.log(params);
+        });
+    },
     select(type) {
       if (type === "food") {
         const list = this.building.filter((item) => {
           console.log(type);
+
           if (item.category === "음식") {
             return true;
           }
           return false;
-        })
+        });
         this.makeMarker(list);
-      }else if(type==="tour"){
+        this.makeMarker(list,"food");
+      } else if (type === "tour") {
         console.log(type);
         const list = this.building.filter((item) => {
           if (item.category === "관광/여가/오락") {
             return true;
           }
           return false;
-        })
-        this.makeMarker(list);
-      }else if(type==="living"){
-        const list=this.building.filter((item)=>{
-          if(item.category==="생활서비스"){
+        });
+        // this.makeMarker(list);
+        this.makeMarker(list,"tour");
+      } else if (type === "living") {
+        const list = this.building.filter((item) => {
+          if (item.category === "생활서비스") {
             return true;
           }
           return false;
-        })
-        this.makeMarker(list);
+        });
+        // this.makeMarker(list);
+        this.makeMarker(list,"living");
       }
     },
-    makeMarker(list){
-      this.markerPositions=[];
-      list.forEach(e => {
+    makeMarker(list,type) {
+      this.markerPositions = [];
+      list.forEach((e) => {
         this.markerPositions.push([e.lat, e.lng]);
       });
-      console.log(this.markerPositions)
+      // console.log(this.markerPositions);
+      const datas={list,type};
+      this.CREATE_MARKER(datas);
+
     },
     //관심지역 등록
     registInterestArea(dongCode, userId) {
@@ -179,6 +220,11 @@ export default {
       this.setInterestArea(params);
     },
   },
+  watch:{
+    houses : function () {
+      this.setTradeCnt(this.houses);
+    },
+  }
 };
 </script>
 
@@ -198,45 +244,46 @@ export default {
   /* cursor: pointer; */
   text-decoration: none;
 }
-.custom-select{
+.custom-select {
   /* border-radius: 20px;
   width: fit-content;
   padding: 0 10px; */
   border: none;
-  
 }
 /* .bar-item :hover{
   color: #311906;
 } */
-.login{
-   color: black;
+.login {
+  color: black;
 }
 .btn {
   border: none;
   color: #242d54;
 }
-.btn.btn-outline-light{
+.btn.btn-outline-light {
   padding: 0;
 }
-button:hover{
+button:hover {
   /* color: #311906; */
   font-weight: bold;
   background-color: transparent;
   /* transform: scale(1.2); */
 }
-.bar-item, a{
+.bar-item,
+a {
   text-decoration: none;
 }
-.bar-item:hover, a:hover{
+.bar-item:hover,
+a:hover {
   /* transform: scale(1.2); */
   color: #242d54;
   cursor: pointer;
   font-weight: bold;
 }
-.btn.filter{
+.btn.filter {
   padding: 0 7px;
 }
-.name{
+.name {
   font-weight: bolder;
 }
 </style>

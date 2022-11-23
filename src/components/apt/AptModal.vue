@@ -4,12 +4,11 @@
       <b-card
         class="modal-card"
         no-body
-        
         img-src="http://cdn.ksilbo.co.kr/news/photo/202008/770672_439915_052.jpg"
         img-alt="Image"
         img-top
-        v-for="(house, index) in houses"
-        :key="index"
+        v-for="house in houses"
+        :key="house.jibun"
       >
         <b-card-body>
           <b-card-title class="apt-name">{{
@@ -22,20 +21,32 @@
 
         <b-card-footer class="btn-container">
           <b-button
-            class="card-detail" variant="outline-light" 
-            @click="[tradehouse(house.dongCode, house.jibun),$bvModal.show('apttrade')]"
-            >거래 매물 <span class="cnt">+{{cntarr[index]}} </span></b-button
+            class="card-detail"
+            variant="outline-light"
+            @click="
+              [
+                tradehouse(house.dongCode, house.jibun),
+                $bvModal.show('apttrade'),
+              ]
+            "
+            >거래 매물 <span class="cnt" v-for="cnt in cntarr" :key=cnt.jibun><span v-if="cnt.jibun==house.jibun">{{ cnt.cnt }}</span></span></b-button
           >
-          <b-button variant="outline-light" class="card-detail" @click="[detailhouse(house.aptCode),$bvModal.show('aptlist')]">거래 내역</b-button>
+          <b-button
+            variant="outline-light"
+            class="card-detail"
+            @click="[detailhouse(house.aptCode), $bvModal.show('aptlist')]"
+            >거래 내역</b-button
+          >
         </b-card-footer>
       </b-card>
-    <b-modal id="apttrade" size="xl" height="800" scrollable title="거래 매물">
-      <AptTradeList></AptTradeList>
-    </b-modal>
+      <b-modal id="apttrade" size="xl" height="800" scrollable>
+        <template #modal-title> 해당 아파트 거래 매물 </template>
+        <AptTradeList></AptTradeList>
+      </b-modal>
 
-    <b-modal id="aptlist" scrollable title="거래 내역">
-      <AptList></AptList>
-    </b-modal>
+      <b-modal id="aptlist" scrollable title="거래 내역">
+        <AptList></AptList>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -47,26 +58,26 @@ import AptTradeList from "@/components/apt/AptTradeList.vue";
 const houseStore = "houseStore";
 export default {
   name: "AptModal",
-  components:{
+  components: {
     AptList,
-    AptTradeList
+    AptTradeList,
   },
   computed: {
-    ...mapState(houseStore, ["houses","cntarr"]),
+    ...mapState(houseStore, ["houses", "cntarr"]),
   },
   data() {
     return {
       isToggle: "false",
     };
   },
-    methods: {
-    ...mapActions(houseStore, ["getDetailHouse","getTradeList"]),
+  methods: {
+    ...mapActions(houseStore, ["getDetailHouse", "getTradeList"]),
     async detailhouse(aptCode) {
-        this.getDetailHouse(aptCode);
+      this.getDetailHouse(aptCode);
     },
-    async tradehouse(dongCode, jibun){
+    async tradehouse(dongCode, jibun) {
       // console.log(dongCode, jibun)
-      const params={dongCode,jibun};
+      const params = { dongCode, jibun };
       this.getTradeList(params);
     },
   },
@@ -77,8 +88,11 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  color: black;
 }
-
+.modaltitle{
+  color:black;
+}
 body {
   -ms-overflow-style: none;
 }
@@ -97,11 +111,12 @@ body {
   overflow-y: scroll;
   border-radius: 10px;
   z-index: 1;
-  background:rgba(255, 255, 255, 0.7)
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
 }
 .modal-card {
   margin: 30px;
-  
+  /* border: none; */
 }
 .card-title {
   margin-bottom: 6px;
@@ -122,33 +137,38 @@ body {
 .card-detail {
   width: 300px;
   margin: 5px;
-  color:#242d54;
+  color: #242d54;
   /* font-weight: bold; */
   /* border: 1px solid #2f2d38 ; */
   /* background-color: #2f2d38; */
   border: none;
 }
 
-.card-detail:hover{
+.card-detail:hover {
   width: 300px;
   margin: 5px;
-  color:#242d54;
+  color: #242d54;
   /* border: 1px solid #311906 ; */
-  background-color:transparent;
+  background-color: transparent;
   font-weight: bold;
 }
 
-.sub-title{
-  position:relative;
+.sub-title {
+  position: relative;
 }
-.likeBtn{
-  position:absolute;
+.likeBtn {
+  position: absolute;
   top: 0;
   left: 0;
 }
-.cnt{
+.cnt {
   padding: 5px;
-  color:#2f2d38
+  color: #2f2d38;
 }
-
+#apttrade {
+  color: black;
+}
+.modal-title{
+  color: black;
+}
 </style>

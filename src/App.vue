@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <LeftSidebar></LeftSidebar>
+    <LeftSidebar v-if="$route.name !== 'main'"></LeftSidebar>
     <router-view/>
   </div>
 </template>
@@ -19,8 +19,5 @@ export default {
 *{
     padding:0;
     margin:0;
-}
-html{
-    margin-left: 90px;
 }
 </style>
