@@ -38,8 +38,6 @@ export default {
 </script>
 
 <style scoped lang="css" src="@/assets/css/main.css">
-/* @import "@/assets/css/main.css"; */
-/* @import "@/assets/css/noscript.css"; */
 *{
     color: aliceblue;
 }

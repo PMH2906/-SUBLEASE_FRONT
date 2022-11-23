@@ -1,7 +1,5 @@
-import {
-  sidoList, gugunList, houseList, dongList, pointList, tradeCnt, houseDeal, houseTrade, baseAddress,
-  buildingInfo, interestArea
-} from "@/api/house.js";
+import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade,baseAddress,
+  buildingInfo,interestArea,interestAreaList,tradesearch,houseTradeNo,deleteTradeInfo } from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -13,12 +11,15 @@ const houseStore = {
     house: null,
     points: [],
     cntarr: [],
-    jibuns: [],
-    tradehouse: [],
-    address: [],
-    markers_food: [],
-    markers_tour: [],
-    markers_living: [],
+    jibuns:[],
+    tradehouse:[],
+    address:[],
+    markers_food:[],
+    markers_tour:[],
+    markers_living:[],
+    interest_area:[],
+    interest_building:[],
+    trade_detail:[],
   },
   getters: {
     getLatLng: function (state) {
@@ -68,7 +69,7 @@ const houseStore = {
     },
     SET_DETAIL_HOUSE(state, house) {
       state.house = house;
-      // console.log(house);
+      console.log(house);
     },
     SET_POINT_LIST(state, points) {
       state.points = points;
@@ -107,7 +108,20 @@ const houseStore = {
       else if (data.type === "living") {
         state.markers_living = data.list;
       }
+    },
+    GET_INTEREST_AREA(state,data){
+      state.interest_area=data
+    },
+    GET_INTEREST_BUILDING(state,data){
+      state.interest_building=data;
+    },
+    GET_TRADE_DETAIL(state,data){
+      state.trade_detail=data;
+      console.log(state.trade_detail)
+    },
+    DEL_INTEREST_TRADE(){
     }
+
   },
   actions: {
     getSido: ({ commit }) => {
@@ -253,8 +267,62 @@ const houseStore = {
         (error) => {
           console.log(error);
         }
+      ) 
+    },
+    getInterestArea:({commit},data)=>{
+      console.log("getinterseArea",data);
+      const params={userId:data};
+      interestAreaList(
+        params,
+        ({data})=>{
+          commit("GET_INTEREST_AREA", data);
+          console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+    getInterestBuilding:({commit},data)=>{
+      console.log("GetInterestBuilding",data);
+      const params={userId:data};
+      tradesearch(
+        params,
+        ({data})=>{
+          commit("GET_INTEREST_BUILDING", data);
+          console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+    getHouseTrade:({commit},data)=>{
+      console.log(data.tradeNo)
+      const params={tradeNo:data.tradeNo};
+      houseTradeNo(
+        params,
+        ({data})=>{
+          commit("GET_TRADE_DETAIL",data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
+    },
+    deleteHouseTrade:({commit},data)=>{
+      const params={tradeNo:data.tradeNo};
+      deleteTradeInfo(
+        params,
+        ({data})=>{
+          commit("DEL_INTEREST_TRADE",data);
+        },
+        (error)=>{
+          console.log(error);
+        }
       )
     }
+    
   },
 };
 

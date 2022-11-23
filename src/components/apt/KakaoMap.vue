@@ -20,12 +20,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, [
-      "houses",
-      "markers_tour",
-      "markers_food",
-      "markers_living",
-    ]),
+    ...mapState(houseStore, ["houses","markers_tour","markers_food","markers_living"]),
   },
   created() {
     if (!("geolocation" in navigator)) {
@@ -66,7 +61,6 @@ export default {
     markers_food: function () {
       this.image = require("@/assets/fork.png");
       this.setAptsOnMap(this.markers_food);
-      console.log("123");
     },
     markers_living: function () {
       this.image = require("@/assets/cart.png");
