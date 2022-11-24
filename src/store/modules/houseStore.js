@@ -313,6 +313,7 @@ const houseStore = {
       )
     },
     deleteHouseTrade:({commit},data)=>{
+      console.log("하이",data)
       const params={tradeNo:data};
       deleteTradeInfo(
         params,
