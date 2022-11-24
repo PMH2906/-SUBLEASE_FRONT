@@ -66,7 +66,7 @@ const routes = [
     name:'AptRegistView',
     beforeEnter: onlyAuthUser, // 로그인 검사하고 나서 이 페이지 이동할 수 있도록
     component: AptRegistView,
-    redirect:"/registapt/lease",
+    redirect:"/registapt/apt",
     children:[
       {
         path:"apt",
