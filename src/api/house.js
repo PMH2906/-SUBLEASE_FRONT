@@ -69,6 +69,7 @@ function removeInterestArea(params,success,fail){
 }
 
 function registtrade(params,success,fail){
+  console.log("IN house",params)
   house.post(`/interest/registtrade`,JSON.stringify(params)).then(success).catch(fail);
 }
 
@@ -85,6 +86,7 @@ function tradeRegister(params, success, fail){
     headers: {'Content-Type': 'multipart/form-data'}
   }).then(success).catch(fail);
 }
+
 
 
 export { sidoList, gugunList, houseList,dongList, pointList,tradeCnt,houseDeal,houseTrade,buildingInfo,

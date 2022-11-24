@@ -2,119 +2,120 @@
   <div>
     매물매물
     <div>
-      <h4>거래 정보</h4>
-      <div>
-        <label for="depositM">월세</label
-        ><input
-          id="depositM"
+      <div class="content-title">거래 정보</div>
+      <div class="contents fee">
+        <div class="fee-type">
+        <b-button @click="toggle" v-if="!status">전세</b-button>
+        <b-button @click="toggle" v-if="status">월세</b-button>
+        </div>
+        <div v-if="status">
+        <input 
+          id="deposit"
           v-model="inputs.deposit"
           type="number"
-          placeholder="보증금"
+          placeholder=" 보증금"
         />
         /
-        <input type="number" placeholder="월세" v-model="inputs.rentFee" /> 만원
+        <input type="number" placeholder=" 월세" v-model="inputs.rentFee" />
+        만원
         <br />
-        <label for="depositY">전세</label
-        ><input
-          id="depositY"
+        </div>
+        
+        <div v-else>
+        <input 
+          id="deposit"
           v-model="inputs.deposit"
           type="number"
-          placeholder="전세"
+          placeholder=" 전세"
         />
         만원
+        </div>
       </div>
     </div>
     <div>
-      <h4>위치 정보</h4>
-      <div>
-        <input type="text" v-model="postcode" placeholder="우편번호" />
-        <input type="button" @click="search()" value="우편번호 찾기" /><br />
+      <div class="content-title">위치 정보</div>
+      <div class="contents">
+        <input type="text" v-model="postcode" placeholder=" 우편번호" />
+        <b-button class="btn" @click="search()">우편번호 찾기</b-button><br />
         <input
           type="text"
           v-model="address"
           id="address"
-          placeholder="주소"
+          placeholder=" 주소"
         /><br />
         <input
           type="text"
           v-model="extraAddress"
           id="extraAddress"
-          placeholder="아파트"
+          placeholder=" 아파트"
         />
       </div>
     </div>
     <div>
-      <h4>기본 정보</h4>
-      <div>
-        <label for="area">건물 크기</label
-        ><input
+      <div class="content-title">기본 정보</div>
+      <div class="contents">
+        <input
           type="number"
           v-model="inputs.area"
           id="area"
-          placeholder="건물 크기"
+          placeholder=" 건물 크기"
         />
-        평 <br />
-        ><input
+        평<br />
+        <input
           type="number"
           id="floor"
           v-model="inputs.floor"
-          placeholder="층 수"
-        />층
+          placeholder=" 층 수"
+        />
+        층
+        
       </div>
     </div>
     <div>
-      <h4>추가 정보</h4>
-      <div>
-        <label for="manageFee">관리비</label
-        ><input
+      <div class="content-title">추가 정보</div>
+      <div class="contents">
+        <input
           id="manageFee"
           v-model="inputs.managementFee"
           type="number"
-          placeholder="관리비"
+          placeholder=" 관리비"
         />
-        만원
-        <!-- <h4>주차 여부</h4>
+        만원<br>
+
+        <input
+          id="buildYear"
+          v-model="inputs.buildYear"
+          type="number"
+          placeholder=" 건축연도"
+        /> 년
 
         <div>
+        <div class="content-title">주차 여부</div>
           <input
             type="radio"
             v-model="inputs.parkingOpt"
-            value=true
+            value="가능"
             id="pos"
             checked
-          /><label for="pos">가능</label>
+          />
+          <label for="pos">가능</label>
+
           <input
             type="radio"
             v-model="inputs.parkingOpt"
-            value=false
+            value="불가능"
             id="impos"
-          /><label for="impos">불가능</label>
+          />
+          <label for="impos">불가능</label>
         </div>
-        <h4>전/월세</h4> -->
-        <!-- 
-        <div>
-          <input
-            type="radio"
-            v-model="inputs.livingType"
-            value=true
-            id="deposit"
-            checked
-          /><label for="pos">전세</label>
-          <input
-            type="radio"
-            v-model="inputs.livingType"
-            value=false
-            id="rent"
-          /><label for="impos">월세</label>
-        </div>
-        <h4>옵션 항목</h4> -->
 
-        <div>
+        <div class="content-title">옵션 항목</div>
           <input
             type="checkbox"
             id="furniture"
             value="옷장"
             v-model="inputs.furnitureOpt"
+            class="contents-item"
           />
           <label for="furniture">옷장</label>
           <input
@@ -122,6 +123,7 @@
             id="loan"
             value="대출"
             v-model="inputs.loanOpt"
+            class="contents-item"
           />
           <label for="loan">대출</label>
           <input
@@ -129,6 +131,7 @@
             id="pet"
             value="반려 동물"
             v-model="inputs.petOpt"
+            class="contents-item"
           />
           <label for="pet">반려 동물</label>
           <input
@@ -136,6 +139,7 @@
             id="insurance"
             value="보험 여부"
             v-model="inputs.insuranceOpt"
+            class="contents-item"
           />
           <label for="insurance">보험</label>
           <input
@@ -143,23 +147,9 @@
             id="commission"
             value="중개 수수료"
             v-model="inputs.commissionOpt"
+            class="contents-item"
           />
           <label for="commission">중개 수수료</label>
-          <input
-            type="checkbox"
-            id="parking"
-            value="주차가능"
-            v-model="inputs.parkingOpt"
-          />
-          <label for="parking">주차가능</label>
-          <input
-            type="checkbox"
-            id="rent"
-            value="월세"
-            v-model="inputs.livingType"
-          />
-          <label for="rent">월세</label>
-        </div>
       </div>
     </div>
 
@@ -173,7 +163,7 @@
     ></b-form-file>
     <b-button @click="regist">매물 등록</b-button><b-button>취소</b-button>
   </div>
-</template> 
+</template>
 
 <script>
 // import userStore from '@/store/modules/userStore';
@@ -184,9 +174,12 @@ const userStore = "userStore";
 export default {
   data() {
     return {
+      status:"False",
       postcode: "",
       address: "",
       extraAddress: "",
+      startDate: "",
+      endDate: "",
       inputs: {
         deposit: "",
         // deposit: "",
@@ -293,7 +286,67 @@ export default {
 * {
   color: black;
 }
+div {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.contents {
+  border: 0.5px solid rgb(158, 158, 158);
+  padding: 10px 0;
+}
+.content-title{
+  margin: 0 0 5px 0;
+}
+.btn {
+  margin: 10px;
+  border: none;
+  background-color: transparent;
+    color: #242d54;
+  cursor: pointer;
+  font-weight: bold;
+}
 
+
+/* .btn.btn-outline-light:hover{
+  background-color: transparent;
+  color: #2f2d38;
+  border: 1px solid #887673 
+} */
+input{
+  border-radius: 5px;
+  border-color: aliceblue;
+  border-width: 1px;
+  padding: 2px;
+  font-size: 16px;
+}
+.contents.fee{
+position: relative;
+}
+.fee-type{
+  position: absolute;
+  left:30px;
+  top:24px;
+  margin:0;
+}
+.fee-type .btn.btn-secondary{
+  margin:2px;
+  padding:10px 35px;
+}
+label{
+  font-size: 16px;
+  font-weight: normal;
+  margin:10px;
+}
+.select-date{
+  width:60%;
+  margin:0 auto;
+}
+.form-control.border{
+  width:60%;
+  margin:0 auto;
+  
+}
 .custom-file-label {
   color: black;
 }

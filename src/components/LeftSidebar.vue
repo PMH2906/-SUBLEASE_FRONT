@@ -3,14 +3,15 @@
     <b-navbar-nav class="icon-bar">
       <router-link class="bar-item" to="/"><b-icon icon="building" font-scale="1.5"/><div id="title">main</div></router-link>
       <router-link class="bar-item" to="/apt"><b-icon icon="geo-alt" font-scale="1.5"/><span id="title">search</span></router-link>
-      <router-link class="bar-item" to="/registapt"><b-icon icon="upload" font-scale="1.5"/><span id="title">upload</span></router-link>
+      <router-link class="bar-item" to="/registapt" v-if="userInfo"><b-icon icon="upload" font-scale="1.5"/><span id="title">upload</span></router-link>
       <!-- <router-link class="bar-item" to="/bookmark"><b-icon icon="bookmark-heart" font-scale="2"/></router-link> -->
-      <router-link class="bar-item" to="/bookmark"><b-icon icon="bookmark-star" font-scale="1.5"/><span id="title">scrap</span></router-link>
+      <router-link class="bar-item" to="/bookmark" v-if="userInfo"><b-icon icon="bookmark-star" font-scale="1.5"/><span id="title">scrap</span></router-link>
       <router-link class="bar-item" to="/mypage"><b-icon icon="person" font-scale="1.5" v-if="userInfo"/><span id="title" v-if="userInfo">mypage</span></router-link>
       <!-- <router-link class="bar-item" to="/login" v-if="!userInfo">로그인</router-link>
       <div class="bar-item" @click="logout" v-else>로그아웃</div> -->
     </b-navbar-nav>
     </div>
+
 </template>
 
 <script>

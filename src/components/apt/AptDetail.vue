@@ -1,42 +1,86 @@
 <template>
-  <div class="aptdetail">
-    <div class="heroImg">
-      <!-- <img
+  <div>
+    <ProfileNavBar></ProfileNavBar>
+    <div class="aptdetail">
+      <!-- {{trade_detail}} -->
+      <div class="heroImg">
+        <!-- <img
         class="img"
         :src="`http://localhost:9999/upload/${event.fileInfos[0].saveFolder}/${event.fileInfos[0].saveFile}`"
         alt=""
       /> -->
-      <img class="second-img" src="@/assets/room1.jpg" />
-    </div>
-    <div class="content">
-      <div class="content-left">
-        <div class="content-left-title">가격 정보</div>
-        <b-table stacked :items="items"></b-table>
+
+        <img
+          class="second-img"
+          :src="`http://localhost:9999/upload/${trade_detail.fileInfos[0].saveFolder}/${trade_detail.fileInfos[0].saveFile}`"
+        />
       </div>
-      <div class="content-right">
-        <div class="content-right-content">
-          <div class="rentfee">전세 {{ trade_detail.deposit }}</div>
-          <div class="sub-content">
-            <div>
-              <div>오피스텔(복층)</div>
-              <div>{{ trade_detail.area }} 평</div>
+      <div class="content">
+        <div class="content-left">
+          <div class="content-left-title">가격 정보</div>
+          <b-table stacked :items="items1" :fields="fields1"></b-table>
+          <div class="content-left-title" id="detailInfo">상세 정보</div>
+          <b-table :items="items2" :fields="fields2"></b-table>
+          <div class="content-left-title">옵션</div>
+          <div class="icons">
+            <div class="icons-item" v-if="trade_detail.commissionOpt">
+              <b-icon icon="coin" font-scale="1.8"></b-icon>
+              <div>중개 수수료</div>
             </div>
-            <div>
-              <div>{{ trade_detail.floor }} 층</div>
-              <div>{{ trade_detail.rentFee }}</div>
+            <div class="icons-item" v-if="trade_detail.insuranceOpt">
+              <font-awesome-icon
+                icon="fa-solid fa-house-chimney-crack"
+                class="icon"
+              />
+              <div>보험</div>
             </div>
-          </div>
-          <div class="location">
-            <span id="location-title">위치</span>
-            <div>
-              {{ trade_detail.sido }} {{ trade_detail.sigungu }}
-              {{ trade_detail.bname }}
+            <div class="icons-item" v-if="trade_detail.parkingOpt">
+              <font-awesome-icon
+                icon="fa-solid fa-square-parking"
+                class="icon"
+              />
+
+              <div>주차</div>
+            </div>
+            <div class="icons-item" v-if="trade_detail.furnitureOpt">
+              <font-awesome-icon icon="fa-solid fa-couch" class="icon" />
+              <div>가구</div>
+            </div>
+            <div class="icons-item" v-if="trade_detail.petOpt">
+              <font-awesome-icon icon="fa-solid fa-paw" class="icon" />
+              <div>애완 동물</div>
             </div>
           </div>
         </div>
-        <div class="btn">
-          <button>예약하기</button>
-          <button>하트</button>
+        <div class="content-right">
+          <div class="content-right-content">
+            <div class="rentfee" v-if="!trade_detail.contractType">
+              전세 {{ trade_detail.deposit }}
+            </div>
+            <div class="rentfee" v-if="trade_detail.contractType">
+              월세 {{ trade_detail.deposit }} / {{ trade_detail.rentFee }}
+            </div>
+            <div class="sub-content">
+              <div>
+                <div>오피스텔</div>
+                <div>{{ trade_detail.area }} 평</div>
+              </div>
+              <div>
+                <div>{{ trade_detail.floor }} 층</div>
+                <div>{{ trade_detail.rentFee }}</div>
+              </div>
+            </div>
+            <div class="location">
+              <span id="location-title">위치</span>
+              <div>
+                {{ trade_detail.sido }} {{ trade_detail.sigungu }}
+                {{ trade_detail.bname }}
+              </div>
+            </div>
+          </div>
+          <div class="btn">
+            <b-button class="sub-title tradeType">예약하기</b-button>
+          </div>
         </div>
       </div>
     </div>
@@ -44,16 +88,61 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import ProfileNavBar from "@/components/ProfileNavBar.vue";
 const houseStore = "houseStore";
+const userStore = "userStore";
 export default {
   computed: {
     ...mapState(houseStore, ["trade_detail"]),
+    ...mapState(userStore, ["userInfo"]),
+  },
+  watch: {
+    trade_detail: {
+      handler: function (val) {
+        this.items1.push({
+          deposit: val["deposit"],
+          rentFee: val["rentFee"],
+          managementFee: val["managementFee"],
+        });
+        this.items2.push({
+          floor: val["floor"],
+          area: val["area"],
+          buildYear: val["buildYear"],
+        });
+        console.log(this.items);
+      },
+      immediate: true,
+    },
+  },
+  components: {
+    ProfileNavBar,
   },
   data() {
     return {
-      items: [{ 보증금: 1000, 월세: 40, 관리비: "Dickerson" }],
+      items1: [],
+      items2: [],
+      fields1: [
+        { key: "deposit", label: "보증금" },
+        { key: "rentFee", label: "월세" },
+        { key: "managementFee", label: "관리비" },
+      ],
+      fields2: [
+        { key: "floor", label: "층 수" },
+        { key: "area", label: "평 수" },
+        { key: "buildYear", label: "건축연도" },
+      ],
     };
+  },
+  methods: {
+    ...mapActions(houseStore, ["setInterestApt"]),
+    //관심지역 등록
+    registInterestApt(tradeNo, userId) {
+      console.log(tradeNo, userId);
+      console.log("REGISTAPT", tradeNo, userId);
+      const params = { tradeNo, userId };
+      this.setInterestApt(params);
+    },
   },
 };
 </script>
@@ -65,7 +154,7 @@ export default {
 .heroImg {
   display: flex;
   justify-content: center;
-  margin: 0 40px;
+  margin: 30px 40px;
 }
 .first-img {
   width: 40%;
@@ -83,15 +172,19 @@ export default {
   margin: 40px;
 }
 .content-left-title {
+  position: sticky;
   font-weight: bold;
   font-size: 20px;
+  margin: 10px 0 5px 0;
 }
+
 .content-right {
   width: 30%;
   height: 400px;
   margin: 40px;
   border: 1px solid;
   box-shadow: 0px 1px black;
+  padding: 10px;
 }
 
 .rentfee {
@@ -112,6 +205,7 @@ export default {
 }
 .btn {
   width: 100%;
+  padding: 0;
 }
 .location {
   display: flex;
@@ -121,5 +215,15 @@ export default {
 #location-title {
   width: 20%;
   font-weight: bold;
+}
+.icons {
+  display: flex;
+  justify-content: space-around;
+}
+.icons-item {
+  text-align: center;
+}
+.icon {
+  font-size: 30px;
 }
 </style>

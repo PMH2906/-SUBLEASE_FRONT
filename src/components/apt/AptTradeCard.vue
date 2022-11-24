@@ -1,10 +1,6 @@
 <template>
-  <router-link class="e
-  
-  
-  vent-link" to="">
+  <router-link class="e vent-link" to="">
     <div class="event-card">
-      
       <img
         class="img"
         :src="`http://localhost:9999/upload/${event.fileInfos[0].saveFolder}/${event.fileInfos[0].saveFile}`"
@@ -30,36 +26,67 @@
         <b-card-sub-title class="sub-title tradeType" v-else
           >일반 매물</b-card-sub-title
         >
+        <font-awesome-icon class="heart" icon="fa-regular fa-heart" v-if="status" @click="[registInterestApt(event.tradeNo, userInfo.userId),toggle()]"/>
+        <font-awesome-icon class="heart" icon="fa-solid fa-heart" v-if="!status" @click="[deleteInterestTrade(event.tradeNo),toggle()]"/>
       </b-card-body>
+      <!-- {{interest_building.list}} -->
       <!-- {{ event }} -->
     </div>
   </router-link>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState,mapActions } from "vuex";
 const houseStore = "houseStore";
+const userStore = "userStore";
 export default {
   name: "AptTradeCard",
   components: {},
   computed: {
-    ...mapState(houseStore, ["tradehouse"]),
+    ...mapState(houseStore, ["tradehouse","interest_building"]),
+    ...mapState(userStore, ["userInfo"]),
   },
-  created() {},
-  methods: {},
+  methods: {
+    ...mapActions(houseStore, ["setInterestApt","deleteHouseTrade"]),
+    //관심지역 등록
+    registInterestApt(tradeNo, userId) {
+      console.log(tradeNo, userId);
+      console.log("REGISTAPT", tradeNo, userId);
+      const params = { tradeNo, userId };
+      this.setInterestApt(params);
+    },
+    deleteInterestTrade(tradeNo){
+      console.log(tradeNo)
+      this.deleteHouseTrade(tradeNo);
+    },
+    toggle(){
+      this.status=!this.status;
+    },
+    checkStatus(tradeNo){
+      this.interest_building.list.forEach(e => {
+        console.log(e.tradeNo, tradeNo)
+        if(e.tradeNo==tradeNo){
+          this.status=true;
+        }
+        else this.status=false;
+      });
+    }
+  },
   props: {
     event: {
       type: Object,
     },
   },
   data() {
-    return {};
+    return {
+      status:false
+    };
   },
 };
 </script>
 
 <style scoped>
-*{
+* {
   text-decoration: none;
 }
 .img {
@@ -101,7 +128,6 @@ export default {
   transition: all 0.2s linear;
   cursor: pointer;
   color: #2f2d38;
-
 }
 
 .status {
@@ -135,11 +161,15 @@ img {
   text-decoration: none;
   font-weight: 100;
 }
-.a{
+.a {
   color: none;
   text-decoration: none;
 }
-.a:hover{
+.a:hover {
   text-decoration: none;
+}
+.heart{
+  float:right;
+  margin-right:5px;
 }
 </style>

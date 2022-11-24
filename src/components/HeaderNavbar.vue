@@ -74,7 +74,7 @@
               v-if="userInfo"
               style="color: black"
             /><span id="title" />
-            <span style="padding: 10px" class="name"
+            <span class="name"
               >{{ userInfo.userName }}님</span
             >
             <span class="bar-item" @click="logout">LOGOUT</span>
@@ -285,6 +285,7 @@ a:hover {
   padding: 0 7px;
 }
 .name {
+  padding: 10px;
   font-weight: bolder;
 }
 </style>

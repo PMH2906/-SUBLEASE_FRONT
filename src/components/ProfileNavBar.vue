@@ -29,6 +29,7 @@
   </header>
 </template>
 
+
 <script>
 import { mapState, mapActions } from "vuex";
 const userStore = "userStore";
@@ -55,6 +56,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 * {
