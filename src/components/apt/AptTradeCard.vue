@@ -1,13 +1,13 @@
 <template>
  
-    <div class="event-card" @click="goToDetail(event.tradeNo)">
+    <div class="event-card">
       <img
         class="img"
         :src="`http://localhost:9999/upload/${event.fileInfos[0].saveFolder}/${event.fileInfos[0].saveFile}`"
         alt=""
       />
 
-      <b-card-body class="title">
+      <b-card-body class="title" @click="goToDetail(event.tradeNo)">
         <b-card-title class="livingtype" v-if="event.livingType"
           >월세 {{ event.deposit }}/{{ event.rentFee }} 만원</b-card-title
         >
@@ -26,9 +26,12 @@
         <b-card-sub-title class="sub-title tradeType" v-else
           >일반 매물</b-card-sub-title
         >
-        <font-awesome-icon class="heart" icon="fa-regular fa-heart" v-if="status" @click="[registInterestApt(event.tradeNo, userInfo.userId),toggle()]"/>
-        <font-awesome-icon class="heart" icon="fa-solid fa-heart" v-if="!status" @click="[deleteInterestTrade(event.tradeNo),toggle()]"/>
       </b-card-body>
+        <font-awesome-icon class="heart" icon="fa-regular fa-heart" v-if="!status" @click="[registInterestApt(event.tradeNo, userInfo.userId),toggle()]"/>
+        <!-- <font-awesome-icon class="heart" icon="fa-regular fa-heart" v-for="(item, index) in interest_building.list.filter((c)=>c.tradeNo!=event.tradeNo)"  :key="index" @click="[registInterestApt(event.tradeNo, userInfo.userId),toggle()]"/>
+        <font-awesome-icon class="heart" icon="fa-solid fa-heart" v-for="(item, index) in interest_building.list.filter((c)=>c.tradeNo===event.tradeNo)" :key="index"  @click="[deleteInterestTrade(event.tradeNo),toggle()]"/> -->
+        <!-- <font-awesome-icon class="heart" icon="fa-solid fa-heart" v-for="(item, index) in interest_building.filter((c)=>c.tradeNo!==tradeNo)" :key="index"  @click="[deleteInterestTrade(event.tradeNo),toggle()]"/> -->
+        <font-awesome-icon class="heart" icon="fa-solid fa-heart" v-if="status" @click="[deleteInterestTrade(event.tradeNo),toggle()]"/>
       <!-- {{interest_building.list}} -->
       <!-- {{ event }} -->
     </div>
@@ -43,11 +46,11 @@ export default {
   name: "AptTradeCard",
   components: {},
   computed: {
-    ...mapState(houseStore, ["tradehouse","interest_building"]),
+    ...mapState(houseStore, ["tradehouse","interest_building","interest_building"]),
     ...mapState(userStore, ["userInfo"]),
   },
   methods: {
-    ...mapActions(houseStore, ["setInterestApt","deleteHouseTrade","getHouseTrade"]),
+    ...mapActions(houseStore, ["setInterestApt","deleteHouseTrade","getHouseTrade","getInterestBuilding",]),
     //관심지역 등록
     registInterestApt(tradeNo, userId) {
       console.log(tradeNo, userId);
@@ -78,7 +81,14 @@ export default {
       this.$router.push({name:"interestdetail"});
       // console.log(window.location.protocol+"//"+window.location.host+"/#/interestdetail")
       // window.location.href=window.location.protocol+"//"+window.location.host+"/#/interestdetail";
-    }
+    },
+    getInterest() {
+      console.log(this.userInfo.userId);
+      this.getInterestBuilding(this.userInfo.userId);
+    },
+  },
+  created() {
+    this.getInterest();
   },
   props: {
     event: {

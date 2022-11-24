@@ -239,6 +239,7 @@ export default {
       });
 
       await this.tradeRegist(params);
+      this.$router.push('/apt');
     },
     toggle() {
       this.status = !this.status;

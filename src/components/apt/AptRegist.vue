@@ -233,6 +233,7 @@ export default {
       });
 
       await this.tradeRegist(params);
+      this.$router.push('/apt');
     },
     search() {
       //@click을 사용할 때 함수는 이렇게 작성해야 한다.

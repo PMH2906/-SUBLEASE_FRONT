@@ -69,7 +69,7 @@ const houseStore = {
     },
     SET_DETAIL_HOUSE(state, house) {
       state.house = house;
-      console.log(house);
+      console.log("뭘까요",house);
     },
     SET_POINT_LIST(state, points) {
       state.points = points;

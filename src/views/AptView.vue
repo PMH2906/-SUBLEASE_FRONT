@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderNavBar></HeaderNavBar>
-    <KaKaoMap></KaKaoMap>
+    <KaKaoMap class="map"></KaKaoMap>
     <AptModal v-show="houses.length"></AptModal>
   </div>
 </template>
@@ -25,6 +25,11 @@ export default {
   },
 };
 </script>
-
 <style>
+/* .map{
+   margin-top: 5.5px;
+  margin-left: 50px;
+  width: 100%;
+  height: 94vh;
+} */
 </style>
