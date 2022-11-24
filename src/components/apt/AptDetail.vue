@@ -20,9 +20,9 @@
         <div class="content-left">
           <div class="content-left-title">가격 정보</div>
           <b-table stacked :items="items1" :fields="fields1"></b-table>
-          <div class="content-left-title" id="detailInfo">상세 정보</div>
+          <div class="content-left-title-other" id="detailInfo">상세 정보</div>
           <b-table :items="items2" :fields="fields2"></b-table>
-          <div class="content-left-title">옵션</div>
+          <div class="content-left-title-other">옵션</div>
           <div class="icons">
             <div class="icons-item" v-if="trade_detail.commissionOpt">
               <b-icon icon="coin" font-scale="1.8"></b-icon>
@@ -84,6 +84,8 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="space">
     </div>
   </div>
 </template>
@@ -183,11 +185,15 @@ export default {
   height: 400px;
   margin: 40px;
 }
-.content-left-title {
-  position: sticky;
+.content-left-title{
   font-weight: bold;
   font-size: 20px;
-  margin: 10px 0 5px 0;
+  margin: 0 0 5px 0;
+}
+.content-left-title-other {
+  font-weight: bold;
+  font-size: 20px;
+  margin: 50px 0 5px 0;
 }
 
 .content-right {
@@ -251,5 +257,8 @@ export default {
   text-align: center;
   font-weight: bold;
   margin: 40px 0 50px 0;
+}
+.space{
+  height:10vh;
 }
 </style>

@@ -26,7 +26,8 @@ html {
   color: black;
 }
 .container {
-  margin:0 60px 0 120px;
+  width:70%;
+  margin:0 60px 0 220px;
   text-align: center;
 }
 .regist-title {
