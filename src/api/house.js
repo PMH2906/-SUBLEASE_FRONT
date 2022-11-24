@@ -69,6 +69,7 @@ function removeInterestArea(params,success,fail){
 }
 
 function registtrade(params,success,fail){
+  console.log("IN house",params)
   house.post(`/interest/registtrade`,JSON.stringify(params)).then(success).catch(fail);
 }
 
@@ -79,6 +80,7 @@ function tradesearch(params,success,fail){
 function deleteTradeInfo(params,success,fail){
   house.delete(`/interest/deletetrade/${params.tradeNo}`).then(success).catch(fail);
 }
+
 
 
 
