@@ -4,30 +4,30 @@
       <div class="content-title">거래 정보</div>
       <div class="contents fee">
         <div class="fee-type">
-        <b-button @click="toggle" v-if="!status">전세</b-button>
-        <b-button @click="toggle" v-if="status">월세</b-button>
+          <b-button @click="toggle" v-if="!status">전세</b-button>
+          <b-button @click="toggle" v-if="status">월세</b-button>
         </div>
         <div v-if="status">
-        <input 
-          id="deposit"
-          v-model="inputs.deposit"
-          type="number"
-          placeholder=" 보증금"
-        />
-        /
-        <input type="number" placeholder=" 월세" v-model="inputs.rentFee" />
-        만원
-        <br />
+          <input
+            id="deposit"
+            v-model="inputs.deposit"
+            type="number"
+            placeholder=" 보증금"
+          />
+          /
+          <input type="number" placeholder=" 월세" v-model="inputs.rentFee" />
+          만원
+          <br />
         </div>
-        
+
         <div v-else>
-        <input 
-          id="deposit"
-          v-model="inputs.deposit"
-          type="number"
-          placeholder=" 전세"
-        />
-        만원
+          <input
+            id="deposit"
+            v-model="inputs.deposit"
+            type="number"
+            placeholder=" 전세"
+          />
+          만원
         </div>
       </div>
     </div>
@@ -73,14 +73,14 @@
             id="start-date"
             size="sm"
             placeholder=" 시작 날짜 선택"
-            v-model="startDate"
+            v-model="inputs.startDate"
             class="select-date"
           ></b-form-datepicker>
           <b-form-datepicker
             id="end-date"
             size="sm"
             placeholder=" 종료 날짜 선택"
-            v-model="endDate"
+            v-model="inputs.endDate"
             class="select-date"
           ></b-form-datepicker>
         </div>
@@ -95,21 +95,22 @@
           type="number"
           placeholder=" 관리비"
         />
-        만원<br>
+        만원<br />
 
         <input
           id="buildYear"
           v-model="inputs.buildYear"
           type="number"
           placeholder=" 건축연도"
-        /> 년
+        />
+        년
 
         <div>
-        <div class="content-title">주차 여부</div>
+          <div class="content-title">주차 여부</div>
           <input
             type="radio"
             v-model="inputs.parkingOpt"
-            value="가능"
+            value="TRUE"
             id="pos"
             checked
           />
@@ -118,104 +119,130 @@
           <input
             type="radio"
             v-model="inputs.parkingOpt"
-            value="불가능"
+            value="FALSE"
             id="impos"
           />
           <label for="impos">불가능</label>
         </div>
 
         <div class="content-title">옵션 항목</div>
-          <input
-            type="checkbox"
-            id="furniture"
-            value="옷장"
-            v-model="inputs.furnitureOpt"
-            class="contents-item"
-          />
-          <label for="furniture">옷장</label>
-          <input
-            type="checkbox"
-            id="loan"
-            value="대출"
-            v-model="inputs.loanOpt"
-            class="contents-item"
-          />
-          <label for="loan">대출</label>
-          <input
-            type="checkbox"
-            id="pet"
-            value="반려 동물"
-            v-model="inputs.petOpt"
-            class="contents-item"
-          />
-          <label for="pet">반려 동물</label>
-          <input
-            type="checkbox"
-            id="insurance"
-            value="보험 여부"
-            v-model="inputs.insuranceOpt"
-            class="contents-item"
-          />
-          <label for="insurance">보험</label>
-          <input
-            type="checkbox"
-            id="commission"
-            value="중개 수수료"
-            v-model="inputs.commissionOpt"
-            class="contents-item"
-          />
-          <label for="commission">중개 수수료</label>
-      </div>
-    </div>
-<div>
-      
-    
-      <div class="content-title">파일 등록</div>
-      <div class="contents">
         <input
-            type="file"
-            class="form-control border"
-            name="upfile"
-            multiple="multiple"
-          />
+          type="checkbox"
+          id="furniture"
+          value="옷장"
+          v-model="inputs.furnitureOpt"
+          class="contents-item"
+        />
+        <label for="furniture">옷장</label>
+        <input
+          type="checkbox"
+          id="loan"
+          value="대출"
+          v-model="inputs.loanOpt"
+          class="contents-item"
+        />
+        <label for="loan">대출</label>
+        <input
+          type="checkbox"
+          id="pet"
+          value="반려 동물"
+          v-model="inputs.petOpt"
+          class="contents-item"
+        />
+        <label for="pet">반려 동물</label>
+        <input
+          type="checkbox"
+          id="insurance"
+          value="보험 여부"
+          v-model="inputs.insuranceOpt"
+          class="contents-item"
+        />
+        <label for="insurance">보험</label>
+        <input
+          type="checkbox"
+          id="commission"
+          value="중개 수수료"
+          v-model="inputs.commissionOpt"
+          class="contents-item"
+        />
+        <label for="commission">중개 수수료</label>
       </div>
     </div>
-    <b-button class="btn" >매물 등록</b-button
-    ><b-button class="btn" >취소</b-button>
+    <b-form-file
+      id="file-default"
+      multiple
+      input
+      Array
+      :file-name-formatter="formatNames"
+      v-model="fileInfos"
+    ></b-form-file>
+    <b-button @click="regist">매물 등록</b-button><b-button>취소</b-button>
   </div>
 </template>
 
 <script>
 import "vue2-datepicker/index.css";
+import { mapActions, mapState } from "vuex";
+const houseStore = "houseStore";
+const userStore = "userStore";
 export default {
   data() {
     return {
-      status:"False",
+      status: "False",
       postcode: "",
       address: "",
       extraAddress: "",
-      startDate: "",
-      endDate: "",
+      fileInfos: [],
       inputs: {
-        depositM: "",
-        depositY: "",
+        startDate: "",
+        endDate: "",
+        deposit: "",
+        // deposit: "",
+        userId: "",
+        livingType: false,
         rentFee: "",
         managementFee: "",
-        funitureOpt: "",
-        parkingOpt: "",
-        loanOpt: "",
-        petOpt: "",
-        commissionOpt: "",
-        insuranceOpt: "",
-        files: [],
-        livingType:"False"
+        furnitureOpt: false,
+        parkingOpt: false,
+        loanOpt: false,
+        petOpt: false,
+        commissionOpt: false,
+        insuranceOpt: false,
+        sido: "",
+        sigungu: "",
+        bcode: "",
+        bname: "",
+        buildingName: "",
+        jibun: "",
+        floor: "",
+        area: "",
+        tradeType: false,
+        buildYear: "",
       },
     };
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
   methods: {
-    toggle(){
-      this.status=!this.status;
-      this.livingType=!this.status;
+     ...mapActions(houseStore, ["tradeRegist"]),
+    async regist() {
+      this.inputs.userId = this.userInfo.userId;
+
+      const params = new FormData();
+      const json = JSON.stringify(this.inputs);
+      const blob = new Blob([json], { type: "application/json" });
+      params.append("houseTrade", blob);
+
+      this.fileInfos.forEach((element) => {
+        params.append("upfile", element);
+      });
+
+      await this.tradeRegist(params);
+    },
+    toggle() {
+      this.status = !this.status;
+      this.livingType = !this.status;
     },
     formatNames(files) {
       return files.length === 1
@@ -265,7 +292,12 @@ export default {
           this.inputs.bcode = data.bcode;
           this.inputs.bname = data.bname;
           this.inputs.buildingName = data.buildingName;
-          this.inputs.jibun = data.autoJibunAddress.split(" ").reverse()[0];
+          this.inputs.jibun = data.autoJibunAddress
+            ? data.autoJibunAddress.split(" ").reverse()[0]
+            : data.jibunAddress.split(" ").reverse()[0];
+          console.log(this.inputs.jibun);
+          console.log(data.autoJibunAddress);
+          console.log("dhsafhdsha", data.jibunAddress);
         },
       }).open();
     },
@@ -286,57 +318,54 @@ div {
   border: 0.5px solid rgb(158, 158, 158);
   padding: 10px 0;
 }
-.content-title{
+.content-title {
   margin: 0 0 5px 0;
 }
 .btn {
   margin: 10px;
   border: none;
   background-color: transparent;
-    color: #242d54;
+  color: #242d54;
   cursor: pointer;
   font-weight: bold;
 }
-
 
 /* .btn.btn-outline-light:hover{
   background-color: transparent;
   color: #2f2d38;
   border: 1px solid #887673 
 } */
-input{
+input {
   border-radius: 5px;
   border-color: aliceblue;
   border-width: 1px;
   padding: 2px;
   font-size: 16px;
 }
-.contents.fee{
-position: relative;
+.contents.fee {
+  position: relative;
 }
-.fee-type{
+.fee-type {
   position: absolute;
-  left:30px;
-  top:24px;
-  margin:0;
+  left: 30px;
+  top: 24px;
+  margin: 0;
 }
-.fee-type .btn.btn-secondary{
-  margin:2px;
-  padding:10px 35px;
+.fee-type .btn.btn-secondary {
+  margin: 2px;
+  padding: 10px 35px;
 }
-label{
+label {
   font-size: 16px;
   font-weight: normal;
-  margin:10px;
+  margin: 10px;
 }
-.select-date{
-  width:60%;
-  margin:0 auto;
+.select-date {
+  width: 60%;
+  margin: 0 auto;
 }
-.form-control.border{
-  width:60%;
-  margin:0 auto;
-  
+.form-control.border {
+  width: 60%;
+  margin: 0 auto;
 }
-
 </style>

@@ -15,7 +15,7 @@
                 <router-link class="bar-item" to="/apt"><b-icon icon="geo-alt" font-scale="2"></b-icon></router-link>
               </li>
               <li>
-                <router-link class="bar-item" to="/apt"><b-icon icon="upload" font-scale="2"></b-icon></router-link>
+                <router-link class="bar-item" to="/registapt"><b-icon icon="upload" font-scale="2"></b-icon></router-link>
               </li>
               <li v-if="userInfo">
                 <router-link class="bar-item" to="/mypage"><b-icon icon="person" font-scale="2"></b-icon></router-link>

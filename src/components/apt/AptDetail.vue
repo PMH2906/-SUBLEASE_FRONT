@@ -3,6 +3,7 @@
     <ProfileNavBar></ProfileNavBar>
     <div class="aptdetail">
       <!-- {{trade_detail}} -->
+      <h2 class="apart">{{trade_detail.buildingName}}</h2>
       <div class="heroImg">
         <!-- <img
         class="img"
@@ -11,8 +12,8 @@
       /> -->
 
         <img
-          class="second-img"
-          :src="`http://localhost:9999/upload/${trade_detail.fileInfos[0].saveFolder}/${trade_detail.fileInfos[0].saveFile}`"
+          class="second-img" style="width:300px; height:300px; margin: 0 20px;"
+          :src="`http://localhost:9999/upload/${trade_detail.fileInfos[index].saveFolder}/${trade_detail.fileInfos[index].saveFile}`" v-for="(item, index) in trade_detail.fileInfos" :key="index"
         />
       </div>
       <div class="content">
@@ -100,11 +101,22 @@ export default {
   watch: {
     trade_detail: {
       handler: function (val) {
-        this.items1.push({
-          deposit: val["deposit"],
-          rentFee: val["rentFee"],
-          managementFee: val["managementFee"],
-        });
+        this.items1=[];
+        this.items2=[];
+        if(val["rentFee"]){
+          this.items1.push({
+            deposit: val["deposit"],
+            rentFee: val["rentFee"],
+            managementFee: val["managementFee"],
+          });
+          }
+        else{
+          this.items1.push({
+            deposit: val["deposit"],
+            rentFee: "없음",
+            managementFee: val["managementFee"],
+          });
+        }
         this.items2.push({
           floor: val["floor"],
           area: val["area"],
@@ -164,7 +176,7 @@ export default {
 }
 .content {
   display: flex;
-  margin: 0 40px;
+  margin: 0 8% 0 12%;
 }
 .content-left {
   width: 70%;
@@ -183,8 +195,9 @@ export default {
   height: 400px;
   margin: 40px;
   border: 1px solid;
-  box-shadow: 0px 1px black;
+  box-shadow: 1px 2px grey;
   padding: 10px;
+  position: relative;
 }
 
 .rentfee {
@@ -207,6 +220,14 @@ export default {
   width: 100%;
   padding: 0;
 }
+
+.btn.btn-secondary{
+  position: absolute;
+  bottom: 15%;
+  left: 15%;
+  width: 70%;
+  height: 40px;
+}
 .location {
   display: flex;
   justify-content: center;
@@ -225,5 +246,10 @@ export default {
 }
 .icon {
   font-size: 30px;
+}
+.apart{
+  text-align: center;
+  font-weight: bold;
+  margin: 40px 0 50px 0;
 }
 </style>

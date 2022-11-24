@@ -1,5 +1,5 @@
 import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade,baseAddress,
-  buildingInfo,interestArea,interestAreaList,tradesearch,houseTradeNo,deleteTradeInfo,registtrade } from "@/api/house.js";
+  buildingInfo,interestArea,interestAreaList,tradesearch,houseTradeNo,deleteTradeInfo,registtrade ,tradeRegister} from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -121,7 +121,8 @@ const houseStore = {
     },
     DEL_INTEREST_TRADE(){
     },
-    SET_INTEREST_APT(){}
+    SET_INTEREST_APT(){},
+    REGIST_TRADE(){},
 
   },
   actions: {
@@ -334,6 +335,17 @@ const houseStore = {
         },
         (error)=>{
           console.log(error);
+        }
+      )
+    },
+    tradeRegist : ({commit},params)=>{
+      tradeRegister(
+        params,({data})=>{
+          commit("REGIST_TRADE",data);
+          alert("매물이 등록되었습니다.")
+        },(error)=>{
+          console.log(error);
+          alert("매물 등록에 실패하였습니다.")
         }
       )
     }

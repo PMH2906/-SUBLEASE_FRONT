@@ -4,7 +4,7 @@
   <div class="container">
     <h1 class="regist-title">방 등록하기</h1>
     <div class="register-type">
-      <router-link :to="{ name: 'apt' }" class="apt">매매 등록</router-link>
+      <router-link to="/registapt/apt" class="apt">매매 등록</router-link>
       <router-link :to="{ name: 'lease' }" class="lease">전대 등록</router-link>
     </div>
     <router-view></router-view>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    매물매물
     <div>
       <div class="content-title">거래 정보</div>
       <div class="contents fee">
@@ -94,7 +93,7 @@
           <input
             type="radio"
             v-model="inputs.parkingOpt"
-            value="가능"
+            value="TRUE"
             id="pos"
             checked
           />
@@ -103,7 +102,7 @@
           <input
             type="radio"
             v-model="inputs.parkingOpt"
-            value="불가능"
+            value="FALSE"
             id="impos"
           />
           <label for="impos">불가능</label>
@@ -202,7 +201,7 @@ export default {
         floor: "",
         area: "",
         tradeType: false,
-        buildingYear: "2008",
+        buildYear: "",
       },
       fileInfos: [],
     };
@@ -212,6 +211,10 @@ export default {
   },
   methods: {
     ...mapActions(houseStore, ["tradeRegist"]),
+      toggle(){
+      this.status=!this.status;
+      this.livingType=!this.status;
+    },
     formatNames(files) {
       return files.length === 1
         ? files[0].name
@@ -274,7 +277,10 @@ export default {
           this.inputs.bcode = data.bcode;
           this.inputs.bname = data.bname;
           this.inputs.buildingName = data.buildingName;
-          this.inputs.jibun = data.autoJibunAddress.split(" ").reverse()[0];
+          this.inputs.jibun = data.autoJibunAddress ? data.autoJibunAddress.split(" ").reverse()[0]: data.jibunAddress.split(" ").reverse()[0];
+          console.log(this.inputs.jibun);
+          console.log(data.autoJibunAddress);
+          console.log("dhsafhdsha",data.jibunAddress);
         },
       }).open();
     },

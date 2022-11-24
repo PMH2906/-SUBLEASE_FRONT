@@ -1,6 +1,6 @@
 <template>
-  <router-link class="e vent-link" to="">
-    <div class="event-card">
+ 
+    <div class="event-card" @click="goToDetail(event.tradeNo)">
       <img
         class="img"
         :src="`http://localhost:9999/upload/${event.fileInfos[0].saveFolder}/${event.fileInfos[0].saveFile}`"
@@ -32,7 +32,7 @@
       <!-- {{interest_building.list}} -->
       <!-- {{ event }} -->
     </div>
-  </router-link>
+
 </template>
 
 <script>
@@ -47,7 +47,7 @@ export default {
     ...mapState(userStore, ["userInfo"]),
   },
   methods: {
-    ...mapActions(houseStore, ["setInterestApt","deleteHouseTrade"]),
+    ...mapActions(houseStore, ["setInterestApt","deleteHouseTrade","getHouseTrade"]),
     //관심지역 등록
     registInterestApt(tradeNo, userId) {
       console.log(tradeNo, userId);
@@ -70,6 +70,14 @@ export default {
         }
         else this.status=false;
       });
+    },
+    goToDetail(tradeNo){
+      console.log("111111111",tradeNo)
+      const params = {tradeNo:tradeNo};
+      this.getHouseTrade(params);
+      this.$router.push({name:"interestdetail"});
+      // console.log(window.location.protocol+"//"+window.location.host+"/#/interestdetail")
+      // window.location.href=window.location.protocol+"//"+window.location.host+"/#/interestdetail";
     }
   },
   props: {
