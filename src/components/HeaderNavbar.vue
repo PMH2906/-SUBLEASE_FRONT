@@ -86,6 +86,7 @@
 </template>
 
 <script>
+
 import { mapState, mapActions, mapMutations } from "vuex";
 const houseStore = "houseStore";
 const userStore = "userStore";
@@ -141,7 +142,7 @@ export default {
       this.userLogout(this.userInfo.userId);
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
-      this.$router.push("/login");
+      this.$router.push("/");
     },
     gugunList() {
       this.CLEAR_GUGUN_LIST();

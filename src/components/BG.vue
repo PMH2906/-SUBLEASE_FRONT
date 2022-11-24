@@ -40,6 +40,7 @@ export default {
 <style scoped lang="css" src="@/assets/css/main.css">
 *{
     color: aliceblue;
+    z-index: -1;
 }
 
 #wrapper{

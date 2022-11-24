@@ -64,7 +64,7 @@ export default {
         await this.getUserInfo(token);
         console.log(this.userInfo);
         // console.log("4. confirm() userInfo :: ", this.userInfo);
-        this.$router.push("/");
+        this.$router.push("/apt");
       }
     },
     moveRegister() {
@@ -78,7 +78,7 @@ export default {
 * {
   padding: 0;
   margin: 0;
-  color: white;
+  color: aliceblue;
 }
 .login {
   display: flex;

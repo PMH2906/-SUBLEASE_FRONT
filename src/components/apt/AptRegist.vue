@@ -1,12 +1,13 @@
 <template>
   <div>
+    매물매물
     <div>
       <h4>거래 정보</h4>
       <div>
         <label for="depositM">월세</label
         ><input
           id="depositM"
-          v-model="inputs.depositM"
+          v-model="inputs.deposit"
           type="number"
           placeholder="보증금"
         />
@@ -16,7 +17,7 @@
         <label for="depositY">전세</label
         ><input
           id="depositY"
-          v-model="inputs.depositY"
+          v-model="inputs.deposit"
           type="number"
           placeholder="전세"
         />
@@ -40,7 +41,6 @@
           id="extraAddress"
           placeholder="아파트"
         />
-     
       </div>
     </div>
     <div>
@@ -52,7 +52,8 @@
           v-model="inputs.area"
           id="area"
           placeholder="건물 크기"
-        /> 평 <br />
+        />
+        평 <br />
         ><input
           type="number"
           id="floor"
@@ -72,49 +73,114 @@
           placeholder="관리비"
         />
         만원
-        <h4>주차 여부</h4>
+        <!-- <h4>주차 여부</h4>
 
         <div>
-          <input type="radio" v-model="inputs.parkingOpt" value="true" id="pos" checked /><label for="pos">가능</label>
-          <input type="radio" v-model="inputs.parkingOpt" value="false" id="impos"/><label for="impos">불가능</label>
+          <input
+            type="radio"
+            v-model="inputs.parkingOpt"
+            value=true
+            id="pos"
+            checked
+          /><label for="pos">가능</label>
+          <input
+            type="radio"
+            v-model="inputs.parkingOpt"
+            value=false
+            id="impos"
+          /><label for="impos">불가능</label>
         </div>
-
-      
-        
-        <h4>옵션 항목</h4>
+        <h4>전/월세</h4> -->
+        <!-- 
+        <div>
+          <input
+            type="radio"
+            v-model="inputs.livingType"
+            value=true
+            id="deposit"
+            checked
+          /><label for="pos">전세</label>
+          <input
+            type="radio"
+            v-model="inputs.livingType"
+            value=false
+            id="rent"
+          /><label for="impos">월세</label>
+        </div>
+        <h4>옵션 항목</h4> -->
 
         <div>
-        <input type="checkbox" id="furniture" value="옷장" v-model="inputs.furnitureOpt" />
-        <label for="furniture">옷장</label>
-        <input type="checkbox" id="loan" value="대출" v-model="inputs.loanOpt" />
-        <label for="loan">대출</label>
-        <input type="checkbox" id="pet" value="반려 동물" v-model="inputs.petOpt" />
-        <label for="pet">반려 동물</label>
-        <input type="checkbox" id="insurance" value="보험 여부" v-model="inputs.insuranceOpt" />
-        <label for="insurance">보험</label>
-        <input type="checkbox" id="commission" value="중개 수수료" v-model="inputs.commissionOpt" />
-        <label for="commission">중개 수수료</label> 
+          <input
+            type="checkbox"
+            id="furniture"
+            value="옷장"
+            v-model="inputs.furnitureOpt"
+          />
+          <label for="furniture">옷장</label>
+          <input
+            type="checkbox"
+            id="loan"
+            value="대출"
+            v-model="inputs.loanOpt"
+          />
+          <label for="loan">대출</label>
+          <input
+            type="checkbox"
+            id="pet"
+            value="반려 동물"
+            v-model="inputs.petOpt"
+          />
+          <label for="pet">반려 동물</label>
+          <input
+            type="checkbox"
+            id="insurance"
+            value="보험 여부"
+            v-model="inputs.insuranceOpt"
+          />
+          <label for="insurance">보험</label>
+          <input
+            type="checkbox"
+            id="commission"
+            value="중개 수수료"
+            v-model="inputs.commissionOpt"
+          />
+          <label for="commission">중개 수수료</label>
+          <input
+            type="checkbox"
+            id="parking"
+            value="주차가능"
+            v-model="inputs.parkingOpt"
+          />
+          <label for="parking">주차가능</label>
+          <input
+            type="checkbox"
+            id="rent"
+            value="월세"
+            v-model="inputs.livingType"
+          />
+          <label for="rent">월세</label>
         </div>
-
       </div>
     </div>
-    <div>
-      <h4>사진 등록</h4>
-      <div>
-      
-      <div class="form-group" align="left">
-							<label for="upfile">파일:</label>
-							<input type="file" class="form-control border" name="upfile" multiple="multiple">
-						</div>
-            <div class="col-auto text-center mt-3"></div>
 
-      </div>
-    </div>
-    <b-button>매물 등록</b-button><b-button>취소</b-button>
+    <b-form-file
+      id="file-default"
+      multiple
+      input
+      Array
+      :file-name-formatter="formatNames"
+      v-model="fileInfos"
+    ></b-form-file>
+    <b-button @click="regist">매물 등록</b-button><b-button>취소</b-button>
   </div>
 </template> 
 
 <script>
+// import userStore from '@/store/modules/userStore';
+// import houseStore from "@/store/modules/houseStore";
+import { mapActions, mapState } from "vuex";
+const houseStore = "houseStore";
+const userStore = "userStore";
 export default {
   data() {
     return {
@@ -122,26 +188,56 @@ export default {
       address: "",
       extraAddress: "",
       inputs: {
-        depositM: "",
-        depositY: "",
+        deposit: "",
+        // deposit: "",
+        userId: "",
+        livingType: false,
         rentFee: "",
         managementFee: "",
-        furnitureOpt: "false",
-        parkingOpt: "false",
-        loanOpt: "false",
-        petOpt: "false",
-        commissionOpt: "false",
-        insuranceOpt: "false",
-        sido:"",
-        sigungu:"",
-        bcode:"",
-        bname:"",
-        buildingName:"",
-        jibun:"",
+        furnitureOpt: false,
+        parkingOpt: false,
+        loanOpt: false,
+        petOpt: false,
+        commissionOpt: false,
+        insuranceOpt: false,
+        sido: "",
+        sigungu: "",
+        bcode: "",
+        bname: "",
+        buildingName: "",
+        jibun: "",
+        floor: "",
+        area: "",
+        tradeType: false,
+        buildingYear: "2008",
       },
+      fileInfos: [],
     };
   },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
+  },
   methods: {
+    ...mapActions(houseStore, ["tradeRegist"]),
+    formatNames(files) {
+      return files.length === 1
+        ? files[0].name
+        : `${files.length} files selected`;
+    },
+    async regist() {
+      this.inputs.userId = this.userInfo.userId;
+
+      const params = new FormData();
+      const json = JSON.stringify(this.inputs);
+      const blob = new Blob([json], { type: "application/json" });
+      params.append("houseTrade", blob);
+
+      this.fileInfos.forEach((element) => {
+        params.append("upfile", element);
+      });
+
+      await this.tradeRegist(params);
+    },
     search() {
       //@click을 사용할 때 함수는 이렇게 작성해야 한다.
       new window.daum.Postcode({
@@ -180,12 +276,12 @@ export default {
           }
           // 우편번호를 입력한다.
           this.postcode = data.zonecode;
-          this.inputs.sido=data.sido;
-          this.inputs.sigungu=data.sigungu;
-          this.inputs.bcode=data.bcode;
-          this.inputs.bname=data.bname;
-          this.inputs.buildingName=data.buildingName;
-          this.inputs.jibun=data.autoJibunAddress.split(' ').reverse()[0];
+          this.inputs.sido = data.sido;
+          this.inputs.sigungu = data.sigungu;
+          this.inputs.bcode = data.bcode;
+          this.inputs.bname = data.bname;
+          this.inputs.buildingName = data.buildingName;
+          this.inputs.jibun = data.autoJibunAddress.split(" ").reverse()[0];
         },
       }).open();
     },
@@ -195,6 +291,10 @@ export default {
 
 <style scoped>
 * {
+  color: black;
+}
+
+.custom-file-label {
   color: black;
 }
 </style>

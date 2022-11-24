@@ -80,7 +80,12 @@ function deleteTradeInfo(params,success,fail){
   house.delete(`/interest/deletetrade/${params.tradeNo}`).then(success).catch(fail);
 }
 
+function tradeRegister(params, success, fail){
+  house.post('http://localhost:9999/apttrade', params,{
+    headers: {'Content-Type': 'multipart/form-data'}
+  }).then(success).catch(fail);
+}
 
 
 export { sidoList, gugunList, houseList,dongList, pointList,tradeCnt,houseDeal,houseTrade,buildingInfo,
-  interestArea,interestAreaList,removeInterestArea,registtrade,tradesearch,deleteTradeInfo,houseTradeNo};
+  interestArea,interestAreaList,removeInterestArea,registtrade,tradesearch,deleteTradeInfo,houseTradeNo,tradeRegister};

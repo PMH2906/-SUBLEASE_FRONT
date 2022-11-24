@@ -2,17 +2,25 @@
   <header>
     <nav class="header-nav">
       <b-row class="text-center">
-        <b-col class="sm-3" />
-        <b-col class="sm-3" />
-        <b-col class="sm-3" />
-        <b-col class="sm-3" />
-        <b-col class="sm-3" />
-         <b-col>
+        <b-col class="sm-3"> </b-col>
+        <b-col class="sm-3"> </b-col>
+        <b-col class="sm-3"> </b-col>
+        <b-col> </b-col>
+        <b-col class="tag"> </b-col>
+        <b-col>
           <router-link class="bar-item" to="/login" v-if="!userInfo"
             >LOGIN</router-link
           >
           <div v-else>
-            <span>{{ userInfo.userName }}님</span>
+            <b-icon
+              icon="person-fill"
+              font-scale="1.5"
+              v-if="userInfo"
+              style="color: black"
+            /><span id="title" />
+            <span style="padding: 10px" class="name"
+              >{{ userInfo.userName }}님</span
+            >
             <span class="bar-item" @click="logout">LOGOUT</span>
           </div>
         </b-col>
@@ -22,12 +30,36 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+const userStore = "userStore";
+export default {
+  data() {
+    return {};
+  },
+  computed: {
+    name: "ProfileNavbar",
 
+    ...mapState(userStore, ["userInfo"]),
+  },
+  created() {},
+  methods: {
+    ...mapActions(userStore, ["userLogout"]),
+
+    logout() {
+      console.log(this.userInfo);
+      this.userLogout(this.userInfo.userId);
+      sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
+      sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
+      this.$router.push("/");
+    },
+  },
+};
 </script>
 
 <style scoped>
 * {
   color: #242d54;
+  z-index: 1;
 }
 
 .header-nav {
@@ -41,45 +73,46 @@
   /* cursor: pointer; */
   text-decoration: none;
 }
-.custom-select{
+.custom-select {
   /* border-radius: 20px;
   width: fit-content;
   padding: 0 10px; */
   border: none;
-  
 }
 /* .bar-item :hover{
   color: #311906;
 } */
-.login{
-   color: black;
+.login {
+  color: black;
 }
 .btn {
   border: none;
   color: #242d54;
 }
-.btn.btn-outline-light{
+.btn.btn-outline-light {
   padding: 0;
 }
-button:hover{
+button:hover {
   /* color: #311906; */
   font-weight: bold;
   background-color: transparent;
   /* transform: scale(1.2); */
 }
-.bar-item, a{
+.bar-item,
+a {
   text-decoration: none;
 }
-.bar-item:hover, a:hover{
+.bar-item:hover,
+a:hover {
   /* transform: scale(1.2); */
   color: #242d54;
   cursor: pointer;
   font-weight: bold;
 }
-.btn.filter{
+.btn.filter {
   padding: 0 7px;
 }
-.name{
+.name {
   font-weight: bolder;
 }
 </style>

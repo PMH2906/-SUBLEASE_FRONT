@@ -54,6 +54,7 @@ const userStore = {
             sessionStorage.setItem("access-token", accessToken);
             sessionStorage.setItem("refresh-token", refreshToken);
           } else {
+            alert("아이디와 비밀번호를 확인하세요.");
             commit("SET_IS_LOGIN", false);
             commit("SET_IS_LOGIN_ERROR", true);
             commit("SET_IS_VALID_TOKEN", false);
@@ -61,6 +62,7 @@ const userStore = {
         },
         (error) => {
           console.log(error);
+          alert("아이디와 비밀번호를 확인하세요.");
         }
       );
     },
@@ -75,6 +77,7 @@ const userStore = {
             // console.log("3. getUserInfo data >> ", data);
           } else {
             console.log("유저 정보 없음!!!!");
+            alert("아이디와 비밀번호를 확인하세요.");
           }
         },
         async (error) => {
@@ -137,6 +140,7 @@ const userStore = {
           } else {
             console.log("유저 정보 없음!!!!");
           }
+          // alert("로그아웃 되었습니다.")
         },
         (error) => {
           console.log(error);
@@ -164,9 +168,11 @@ const userStore = {
         ({data})=>{
           commit("SET_USER_DELETE");
           console.log(data);
+          alert("회원에서 탈퇴되었습니다.")
         },
         (error)=>{
           console.log(error)
+          alert("탈퇴 실패하였습니다.")
         }
       )
     },
@@ -177,9 +183,11 @@ const userStore = {
         ({data})=>{
           commit("SET_USER_UPDATE");
           console.log(data)
+          alert("회원정보가 수정되었습니다.")
         },
         (error)=>{
           console.log(error)
+          alert("회원정보 수정에 실패하였습니다.")
         }
       )
     }

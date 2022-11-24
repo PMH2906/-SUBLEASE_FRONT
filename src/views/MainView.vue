@@ -14,13 +14,13 @@
               <li>
                 <router-link class="bar-item" to="/apt"><b-icon icon="geo-alt" font-scale="2"></b-icon></router-link>
               </li>
-              <!-- <li>
-                <b-icon icon="house-door" font-scale="2"></b-icon>
-              </li> -->
               <li>
                 <router-link class="bar-item" to="/apt"><b-icon icon="upload" font-scale="2"></b-icon></router-link>
               </li>
-              <li>
+              <li v-if="userInfo">
+                <router-link class="bar-item" to="/mypage"><b-icon icon="person" font-scale="2"></b-icon></router-link>
+              </li>
+              <li v-else>
                 <router-link class="bar-item" to="/login"><b-icon icon="person-check" font-scale="2"></b-icon></router-link>
               </li>
             </ul>
@@ -50,21 +50,23 @@ window.ontouchmove = function () {
 window.onorientationchange = function () {
   document.body.scrollTop = 0;
 };
-
+import {mapState} from "vuex";
+const userStore="userStore";
 
 export default {
     name: "MainView",
+    computed:{
+    ...mapState(userStore, ["userInfo"])
+  }
 }
 </script>
 
-<style scoped lang="css" src="@/assets/css/main.css">
-
+<style scoped src="@/assets/css/main.css">
 *{
     color: aliceblue;
-}
-*{
     z-index: 3;
 }
+
 
 
 </style>

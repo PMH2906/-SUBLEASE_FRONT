@@ -1,5 +1,5 @@
 import { sidoList, gugunList, houseList,dongList,pointList,tradeCnt,houseDeal,houseTrade,baseAddress,
-  buildingInfo,interestArea,interestAreaList,tradesearch,houseTradeNo,deleteTradeInfo } from "@/api/house.js";
+  buildingInfo,interestArea,interestAreaList,tradesearch,houseTradeNo,deleteTradeInfo,registtrade } from "@/api/house.js";
 
 const houseStore = {
   namespaced: true,
@@ -120,7 +120,8 @@ const houseStore = {
       console.log(state.trade_detail)
     },
     DEL_INTEREST_TRADE(){
-    }
+    },
+    SET_INTEREST_APT(){}
 
   },
   actions: {
@@ -311,7 +312,7 @@ const houseStore = {
       )
     },
     deleteHouseTrade:({commit},data)=>{
-      const params={tradeNo:data.tradeNo};
+      const params={tradeNo:data};
       deleteTradeInfo(
         params,
         ({data})=>{
@@ -321,9 +322,22 @@ const houseStore = {
           console.log(error);
         }
       )
+    },
+
+    setInterestApt:({commit},data)=>{
+      const params={tradeNo:data.tradeNo,userid:data.userId};
+      registtrade(
+        params,
+        ({data})=>{
+          commit("SET_INTEREST_APT", data);
+          console.log(data);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
     }
-    
+   
   },
 };
-
 export default houseStore;
