@@ -35,6 +35,19 @@
 ## 시장분석
 외국에는 전대 매물 거래가 자주 일어나고 있다. 하지만 한국에는 공식적으로 하는 사이트나 서비스가 없다. 한국에 없는 시장을 공략함으로써 해당 시장에서 유일한 서비스로 확장할 것이다. 또한 사용자가 증가함에 따라 외국으로 유학을 가는 학생들의 미국 전대 매물 혹은 외국 교환 학생들을 위한 한국 전대 매물을 거래할 수 있는 서비스로 추후 확장가능하다.
 
+## STACK
+<img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/Miro-050038?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+<img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
+
+
 ## 화면설계도
 [화면설계도](./FILE/view.pdf)
 
