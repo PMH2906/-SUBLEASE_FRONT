@@ -47,6 +47,8 @@
 <img src="https://img.shields.io/badge/Miro-050038?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
 <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=JavaScript&logoColor=white"/></a> 
 
+## ERD
+<img width="626" alt="스크린샷 2023-04-10 오전 4 21 08" src="https://user-images.githubusercontent.com/44748142/230792410-780153cb-1419-4681-80ee-89ecffc25fa8.png">
 
 ## 화면설계도
 [화면설계도](./FILE/view.pdf)
